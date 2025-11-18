@@ -1,7 +1,7 @@
 // Update the existing checklistcontroll.js with enhanced functionality
 document.addEventListener('DOMContentLoaded', () => {
     const checklistCanvas = document.querySelector('.checklist-canvas');
-    const jsonFilePath = 'https://acesv2.pages.dev/checklist.json';
+    const jsonFilePath = 'https://altaces.netlify.app/checklist.json';
 
     // Fetch the checklist data
     fetch(jsonFilePath)
@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const amadeusHeader = document.createElement('th');
             // Add Amadeus logo and text
-            amadeusHeader.innerHTML = '<img src="https://acesv2.pages.dev/amadlogo.png" alt="Amadeus" style="height: 20px; vertical-align: middle; margin-right: 5px;">';
+            amadeusHeader.innerHTML = '<img src="https://altaces.netlify.app/amadlogo.png" alt="Amadeus" style="height: 20px; vertical-align: middle; margin-right: 5px;">';
             
             const sabreHeader = document.createElement('th');
             // Add Sabre logo and text
-            sabreHeader.innerHTML = '<img src="https://acesv2.pages.dev/sabrelogo.png" alt="Sabre" style="height: 20px; vertical-align: middle; margin-right: 5px;">';
+            sabreHeader.innerHTML = '<img src="https://altaces.netlify.app/sabrelogo.png" alt="Sabre" style="height: 20px; vertical-align: middle; margin-right: 5px;">';
             
             headerRow.appendChild(checkboxHeader);
             headerRow.appendChild(stepsHeader);

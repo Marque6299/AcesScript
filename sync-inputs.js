@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const scriptCanvas = document.querySelector('.script-canvas');
     const scriptNavContainer = document.querySelector('.script-nav-container');
-    const jsonFilePath = 'https://acesv2.pages.dev/scripts-list.json';
+    const jsonFilePath = 'https://altaces.netlify.app/scripts-list.json';
     const customerInput = document.getElementById('customer');
     const agentInput = document.getElementById('user');
     let stateManager;
