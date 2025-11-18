@@ -1,0 +1,322 @@
+:root {
+    --primary-color: #2d6a4f;
+    --secondary-color: #343a40;
+    --background-color: #f8f9fa;
+    --text-color: #1b4332;
+    --white: #ffffff;
+    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --transition: all 0.3s ease;
+    --script-header-bck: linear-gradient(to right, #2980b9, #BC6C25);
+
+}
+
+.errands-header {
+    padding-top: 4px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 2px;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    background: #3a5c5a;
+    color: var(--white);
+    font-weight: 600;
+    font-size: 14px;
+    text-align: center;
+    border-bottom: 8px solid #2c3e50;
+    position: sticky;
+    top: 50.2px;
+    z-index: 100;
+}
+
+/* Twin form styles */
+.twin-form-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    padding: 15px;
+    background: linear-gradient(to right,  var(--secondary-color), var(--primary-color));
+}
+
+.form-container {
+    background: var(--secondary-color);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.customer-heading {
+    font-size: 16px;
+    color: white;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    text-align: center;
+    background: #3a5c5a;
+    vertical-align: middle;
+    border-radius: 12px;
+    border: 2px solid #3498db;
+}
+
+.form-area {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    flex: 1;
+}
+
+.input-pair {
+    display: flex;
+    flex-direction: row;
+    gap: 1px;
+    border: 2px solid #000000;
+    background: #1b4332;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.input-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    align-content: center;
+    width: 100px;
+}
+
+.input-field {
+    padding: 5px 8px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    font-size: 12px;
+    transition: var(--transition);
+    width: 100%;
+    background-color: #ffffff;
+    color: #000000;
+}
+.input-field::placeholder{
+    color: #000000;
+}
+
+
+.input-field:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.2);
+}
+
+.notes-area {
+    margin-top: 15px;
+    display: flex;
+    flex-grow: 1;
+}
+
+.notes-area textarea {
+    min-height: 250px;
+    min-width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    resize: none;
+}
+
+.notes-area textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(45, 106, 79, 0.2);
+}
+
+.form-action {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.copy-button, .clear-button, .archive-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+.copy-button {
+    background: #3498db;
+    color: white;
+}
+
+.clear-button {
+    background: #e74c3c;
+    color: white;
+}
+
+.archive-button {
+    background: #f39c12;
+    color: white;
+    margin-left: auto;
+}
+
+.copy-button:hover, .clear-button:hover, .archive-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Archive section styles */
+.archived-errands-section {
+    padding: 15px;
+    margin-top: 15px;
+    background: linear-gradient(to right,  var(--secondary-color), var(--primary-color));
+    border-radius: 12px;
+}
+
+.archive-header {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding-left: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+    border-radius: 12px;
+    background: #0f3964;
+}
+
+
+.archive-header h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    border-radius: 12px;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px;
+}
+.archive-actions {
+    display: flex;
+    justify-content: space-around;
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+    border-radius: 16px;
+    display: flex;
+    padding: 2px;
+}
+
+#clear-archive-btn {
+    padding: 8px 12px;
+    background: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+#clear-archive-btn:hover {
+    background: #c0392b;
+}
+
+#download-excel-btn {
+    padding: 8px 12px;
+    background: #1a9103;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+#download-excel-btn:hover {
+    background: #91f038;
+}
+
+#copy-all-btn {
+    padding: 8px 12px;
+    background: #09b4c0;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: var(--transition);
+}
+
+#copy-all-btn:hover {
+    background: #45b8fa;
+}
+
+
+
+.archived-table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    overflow-x: auto;
+}
+
+#archived-errands-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+#archived-errands-table th,
+#archived-errands-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+#archived-errands-table th {
+    background: #f5f5f5;
+    font-weight: 600;
+    color: var(--secondary-color);
+    position: sticky;
+    top: 0;
+}
+
+#archived-errands-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+.restore-btn{
+    background: #f39c12;
+    color: white;
+    margin-left: auto;
+}
+
+.delete-btn{
+    background: #e74c3c;
+    color: white;
+}
+
+.no-archives-message {
+    text-align: center;
+    padding: 20px;
+    color: #777;
+    font-style: italic;
+    display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .twin-form-box {
+        grid-template-columns: 1fr;
+    }
+}

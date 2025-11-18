@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-6978764838614552">
+    <link rel="stylesheet" href="app-style.css">
+    <link rel="stylesheet" href="errands-style.css">
+    <link rel="stylesheet" href="links-style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <title>A C E S</title>
+    <style>
+        /* AdSense Integration Styles */
+        .ad-container {
+            display: none; /* Initially hidden */
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        .ad-container.visible {
+            display: flex; /* Show when ads are loaded */
+            margin: 10px 0;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .ad-container.header-ad {
+            background: rgba(44, 62, 80, 0.5);
+            margin: 0;
+            padding: 5px;
+        }
+
+        .ad-container.sidebar-ad {
+            margin: 15px 5px;
+            background: rgba(44, 62, 80, 0.3);
+            border-radius: 12px;
+        }
+
+        .ad-container.content-ad {
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .ad-placeholder {
+            width: 100%;
+            height: 90px;
+            background: linear-gradient(45deg, #2c3e50, #34495e);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        .ad-placeholder.banner {
+            height: 90px;
+        }
+
+        .ad-placeholder.square {
+            height: 250px;
+            max-width: 300px;
+        }
+
+        .ad-placeholder.mobile-banner {
+            height: 50px;
+        }
+
+        /* Loading state for ads */
+        .ad-container.loading {
+            display: flex;
+            opacity: 0.5;
+        }
+
+        .ad-container.error {
+            display: none !important;
+        }
+
+        /* Footer Styles */
+        .site-footer {
+            position: fixed;
+            bottom: 0;
+            left: 80px; /* Same width as sidebar */
+            right: 0;
+            background: linear-gradient(135deg, #1a252f, #2c3e50);
+            color: #ecf0f1;
+            border-top: 2px solid #3498db;
+            z-index: 50;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer-bottom {
+            padding: 8px 20px;
+            text-align: center;
+            color: #95a5a6;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .footer-bottom .copyright {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .footer-bottom .legal-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom .legal-links a {
+            color: #bdc3c7;
+            text-decoration: none;
+            font-size: 11px;
+            transition: color 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .footer-bottom .legal-links a:hover {
+            color: #3498db;
+        }
+
+        /* Add bottom padding to main content to prevent overlap */
+        .main-page {
+            padding-bottom: 50px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .site-footer {
+                left: 0;
+            }
+            
+            .footer-bottom {
+                flex-direction: column;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .footer-bottom .legal-links {
+                justify-content: center;
+            }
+            
+            .main-page {
+                padding-bottom: 70px;
+            }
+            
+            .ad-placeholder.square {
+                height: 200px;
+            }
+        }
+
+        /* Side panel ad adjustment */
+        .side-panel {
+            padding-bottom: 20px;
+        }
+
+        /* Content area spacing for ads */
+        .main-page {
+            position: relative;
+        }
+
+        .content-ad-overlay {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            background: rgba(44, 62, 80, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .content-ad-overlay.visible {
+            display: block;
+        }
+
+        .content-ad-overlay .close-ad {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (max-width: 768px) {
+            .content-ad-overlay {
+                position: relative;
+                bottom: auto;
+                right: auto;
+                margin: 10px;
+            }
+        }
+    </style>
+    <!-- Google AdSense Auto Ads -->
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6978764838614552"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="app-container">
+        <div class="head-banner">
+            <div class="head-logo">
+                <img src="https://acesv2.pages.dev/Aceslogo.png" alt="Aceslogo">
+            </div>
+            <div class="searchbar-group">
+                <select id="channel-selection">
+                    <option value="all">All</option>
+                    <option value="chat">Chat</option>
+                    <option value="voice">Voice</option>
+                </select>
+                <input type="text" id="search-input" placeholder="Search script...">
+                <button id="search-action">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <div class="quick-link">
+                <button class="fd-calculator-link">
+                    <a href="https://fdcalculator.pages.dev" target="_blank">
+                        <i class="fa-solid fa-calculator"></i>
+                        <h3>FD Calculator</h3>
+                    </a>
+                </button>
+            </div>
+            <div class="script-canvas-reset">
+                <button class="global-script-reset">
+                    <i class="fa-solid fa-trash-can-arrow-up"></i>
+                </button>
+            </div>
+            <div class="customer-input">
+                <input type="text" id="customer" placeholder="Customer Name">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div class="agent-user-input">
+                <input type="text" id="user" placeholder="Agent Name">
+                <i class="fa-solid fa-user-secret"></i>
+            </div>
+        </div>
+        <main class="app-body">
+            <div class="side-panel">
+                <div class="nav-item active">
+                    <button id="script-page-action">
+                        <i class="fa-solid fa-scroll"></i>
+                    </button>
+                    <h3>Scripts</h3>
+                    <div class="nav-tooltip">Scripts</div>
+                </div>
+                <div class="nav-item">
+                    <button id="errands-page-action">
+                        <i class="fa-solid fa-clipboard"></i>
+                        <i class="fa-solid fa-clipboard"></i>
+                    </button>
+                    <h3>Errand-Notes</h3>
+                    <div class="nav-tooltip">Errands</div>
+                </div>
+                <div class="nav-item">
+                    <button id="notes-page-action">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                    </button>
+                    <h3>Free-flow</h3>
+                    <div class="nav-tooltip">Freeflow Notes</div>
+                </div>
+                <div class="nav-item">
+                    <button id="check-list-page-action">
+                        <i class="fa-solid fa-list-check"></i>
+                    </button>
+                    <h3>Checklist <i class="fa-solid fa-check"></i></h3>
+                    <div class="nav-tooltip">Process Checklist</div>
+                </div>
+                <div class="nav-item">
+                    <button id="links-page-action">
+                        <i class="fa-solid fa-link"></i>
+                        <h3>Links</h3>
+                    </button>
+                    <div class="nav-tooltip">Links</div>
+                </div>
+            </div>
+            <div class="main-page">
+                <!--Freeflow Notes-->
+                <div class="sub-page" id="notes-page">
+                    <div class="freeflow-header">
+                        Freeflow Notes
+                    </div>
+                    <div class="freeflow-input">
+                        <textarea name="freeflow-textarea" id="ff-txt" placeholder="Your notes here..."></textarea>
+                    </div>
+                </div>
+                <!--Freeflow Notes End-->
+
+                <!--Errands Note-->
+                <div class="sub-page" id="errands-page">
+                    <div class="errands-header">
+                        Errand Notes
+                    </div>
+                    <div class="twin-form-box">
+                        <form class="form-container" aria-labelledby="customer1-heading">
+                            <h2 id="customer1-heading" class="customer-heading">Customer 1</h2>
+                            <div class="form-area">
+                                <div class="input-pair">
+                                    <label for="input-edwin-id-1" class="input-label">Edwin Order #: </label>
+                                    <input type="text" name="input-edwin-id" id="input-edwin-id-1" placeholder="Edwin Order #" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-interaction-id-1" class="input-label">Interaction ID: </label>
+                                    <input type="text" name="input-interaction-id" id="input-interaction-id-1" placeholder="Interaction ID" class="input-field" aria-required="true">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-cxname-1" class="input-label">Customer Name: </label>
+                                    <input type="text" name="input-cxname" id="input-cxname-1" placeholder="Customer Name" class="input-field" aria-required="true">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-dpa-1" class="input-label">DPA: </label>
+                                    <input type="text" name="input-dpa" id="input-dpa-1" placeholder="DPA" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-relationship-1" class="input-label">Relationship: </label>
+                                    <input type="text" name="input-relationship" id="input-relationship-1" placeholder="Relationship" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-query-1" class="input-label">Query: </label>
+                                    <input type="text" name="input-query" id="input-query-1" placeholder="Query" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-resolution-1" class="input-label">Resolution: </label>
+                                    <input type="text" name="input-resolution" id="input-resolution-1" placeholder="Resolution" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-yyrl-1" class="input-label">YY RL/Ticket No. Provided: </label>
+                                    <input type="text" name="input-yyrl" id="input-yyrl-1" placeholder="YY RL/Ticket No. Provided" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-ghostline-1" class="input-label">Ghostline:</label>
+                                    <input type="text" name="input-ghostline" id="input-ghostline-1" placeholder="Ghostline" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-validator-1" class="input-label">Validated by:</label>
+                                    <input type="text" name="input-validator" id="input-validator-1" placeholder="Validated by" class="input-field">
+                                </div>
+                            </div>
+                            <div class="notes-area">
+                                <textarea name="notes" id="notes-1" placeholder="Add your notes here..."></textarea>
+                            </div>
+                            <div class="form-action">
+                                <button type="button" class="copy-button"><i class="fa-solid fa-copy"></i> Copy</button>
+                                <button type="button" class="clear-button"><i class="fa-solid fa-trash"></i> Clear</button>
+                                <button type="button" class="archive-button"><i class="fa-solid fa-box-archive"></i> Archive</button>
+                            </div>
+                        </form>
+                        <form class="form-container" aria-labelledby="customer2-heading">
+                            <h2 id="customer2-heading" class="customer-heading">Customer 2</h2>
+                            <div class="form-area">
+                                <div class="input-pair">
+                                    <label for="input-edwin-id-2" class="input-label">Edwin Order #: </label>
+                                    <input type="text" name="input-edwin-id" id="input-edwin-id-2" placeholder="Edwin Order #" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-interaction-id-2" class="input-label">Interaction ID: </label>
+                                    <input type="text" name="input-interaction-id" id="input-interaction-id-2" placeholder="Interaction ID" class="input-field" aria-required="true">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-cxname-2" class="input-label">Customer Name: </label>
+                                    <input type="text" name="input-cxname" id="input-cxname-2" placeholder="Customer Name" class="input-field" aria-required="true">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-dpa-2" class="input-label">DPA: </label>
+                                    <input type="text" name="input-dpa" id="input-dpa-2" placeholder="DPA" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-relationship-2" class="input-label">Relationship: </label>
+                                    <input type="text" name="input-relationship" id="input-relationship-2" placeholder="Relationship" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-query-2" class="input-label">Query: </label>
+                                    <input type="text" name="input-query" id="input-query-2" placeholder="Query" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-resolution-2" class="input-label">Resolution: </label>
+                                    <input type="text" name="input-resolution" id="input-resolution-2" placeholder="Resolution" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-yyrl-2" class="input-label">YY RL/Ticket No. Provided: </label>
+                                    <input type="text" name="input-yyrl" id="input-yyrl-2" placeholder="YY RL/Ticket No. Provided" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-ghostline-2" class="input-label">Ghostline: </label>
+                                    <input type="text" name="input-ghostline" id="input-ghostline-2" placeholder="Ghostline" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-validator-2" class="input-label">Validated by: </label>
+                                    <input type="text" name="input-validator" id="input-validator-2" placeholder="Validated by" class="input-field">
+                                </div>
+                            </div>
+                            <div class="notes-area">
+                                <textarea name="notes" id="notes-2" placeholder="Add your notes here..."></textarea>
+                            </div>
+                            <div class="form-action">
+                                <button type="button" class="copy-button"><i class="fa-solid fa-copy"></i> Copy</button>
+                                <button type="button" class="clear-button"><i class="fa-solid fa-trash"></i> Clear</button>
+                                <button type="button" class="archive-button"><i class="fa-solid fa-box-archive"></i> Archive</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- Content Ad -->
+                        <div class="ad-container content-ad" id="notes-content-ad">
+                            <ins class="adsbygoogle"
+                                style="display:inline-block;width:728px;height:90px"
+                                data-ad-client="ca-pub-6978764838614552"
+                                data-ad-slot="3456789012"></ins>
+                        </div>
+                    
+                    <div class="archived-errands-section">
+                        <div class="archive-header">
+                            <h3>Archived Errands</h3>
+                            <div class="archive-actions">
+                                <button id="copy-all-btn" class="archive-action-btn">
+                                    <i class="fa-solid fa-copy"></i> Copy All
+                                </button>
+                                <button id="download-excel-btn" class="archive-action-btn">
+                                    <i class="fa-solid fa-file-excel"></i> Download Excel
+                                </button>
+                                <button id="clear-archive-btn" class="archive-action-btn">
+                                    <i class="fa-solid fa-trash-can"></i> Clear Archive
+                                </button>
+                            </div>
+                        </div>
+                        <div class="archived-table-container">
+                            <table id="archived-errands-table">
+                                <thead>
+                                    <tr>
+                                        <th>Edwin ID</th>
+                                        <th>Interaction ID</th>
+                                        <th>Customer Name</th>
+                                        <th>DPA</th>
+                                        <th>Relationship</th>
+                                        <th>Query</th>
+                                        <th>Resolution</th>
+                                        <th>YY RL/Ticket</th>
+                                        <th>Ghostline</th>
+                                        <th>Validated by</th>
+                                        <th>Notes</th>
+                                        <th>Archived Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="archived-errands-body">
+                                    <!-- Archived errands will be added here dynamically -->
+                                </tbody>
+                            </table>
+                            <div id="no-archives-message" class="no-archives-message">No archived errands</div>
+                        </div>
+                    </div>
+                </div>
+                <!--Errands Note End-->
+
+                <!--Script Page-->
+                <div class="sub-page active" id="script-page">
+                    <div class="script-nav-container">
+                        <button id="opening-nav" class="nav-btn active">Opening</button>
+                    </div>
+                    <div class="script-canvas"></div>
+                    <!-- Content Ad -->
+                    <div class="ad-container content-ad" id="script-content-ad">
+                        <ins class="adsbygoogle"
+                             style="display:inline-block;width:728px;height:90px"
+                             data-ad-client="ca-pub-6978764838614552"
+                             data-ad-slot="5678901234"></ins>
+                    </div>
+                </div>
+
+                <!--Checklist Page-->
+                <div class="sub-page" id="check-list-page">
+                    <div class="check-list-nav-container">
+                        <button id="Automated Void-nav" class="listnav-btn">Automated Void</button>
+                        <button id="Automated Exchange-nav" class="listnav-btn">Automated Exchange</button>
+                        <button id="Automated Cancel-nav" class="listnav-btn">Automated Cancel</button>
+                        <button id="Manual Void-nav" class="listnav-btn active">Manual Void</button>
+                        <button id="Manual Partial Exchange-nav" class="listnav-btn">Manual Partial Exchange</button>
+                        <button id="Manual Unused Exchange-nav" class="listnav-btn">Manual Unused Exchange</button>
+                        <button id="Manual Cancel-nav" class="listnav-btn">Manual Cancel</button>
+                    </div>
+                    <div class="checklist-canvas"></div>
+                </div>
+                
+                <div class="sub-page" id="links-page">
+                    <div class="links-header">
+                        Quick Links
+                    </div>
+                    <div class="links-container">
+                        <div class="links-btn-container">
+                            <button class="link-list">
+                            <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=--z4I5BqwkaWyko2JyG4LK80vquCs1VLubaKa5VOj6lUME5JSjgzUlVOMTE2VTNBQzZRVU1MRjQ4MS4u" target="_blank">
+                                <i class="fa-solid fa-user-plus"></i>
+                                <h3>Support Placement / Transfer Tracker</h3>
+                            </a>
+                            </button>
+                            <button class="link-list">
+                            <a href="https://sevav1.netlify.app" target="_blank">
+                                <i class="fa-solid fa-book-open"></i>
+                                <h3>Survey Evaluator App</h3>
+                            </a>
+                            </button>
+                            <button class="link-list">
+                            <a href="https://forms.office.com/r/w3s76mAvUE" target="_blank">
+                                <i class="fa-solid fa-toolbox"></i>
+                                <h3>First Touch and Manual Transaction tracker</h3>
+                            </a>
+                            </button>
+                            <button class="link-list">
+                            <a href="https://forms.office.com/Pages/ResponsePage.aspx?id=--z4I5BqwkaWyko2JyG4LK80vquCs1VLubaKa5VOj6lUMlNXMFM5VEIyWVIxVVdSNk1LRkZOR09RNi4u" target="_blank">
+                                <i class="fa-solid fa-stopwatch"></i>
+                                <h3><strong>(Supervisor Only)</strong> 6th-7th Day OT per Week Tracker</h3>
+                            </a>
+                            </button>
+                            <button class="link-list">
+                            <a href="https://forms.office.com/r/N71Lh4Ve3J" target="_blank">
+                                <i class="fa-solid fa-eraser"></i>
+                                <h3>Daily Void Tracker</h3>
+                            </a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Site Footer -->
+        <footer class="site-footer">
+            <div class="footer-bottom">
+                <div class="copyright">
+                    &copy; 2025 ACES - MIS Applications. All rights reserved.
+                </div>
+                <div class="legal-links">
+                    <a href="privacy-policy.html" target="_blank">Privacy Policy</a>
+                    <a href="terms-conditions.html" target="_blank">Terms & Conditions</a>
+                    <a href="cookie-policy.html" target="_blank">Cookie Policy</a>
+                    <a href="adsense-disclaimer.html" target="_blank">Disclaimer</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Dynamic Ad Management Script -->
+    <script>
+        class AdManager {
+            constructor() {
+                this.adContainers = [];
+                this.observerConfig = {
+                    childList: true,
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ['data-ad-status']
+                };
+                this.init();
+            }
+
+            init() {
+                // Wait for DOM to be fully loaded
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', () => this.setupAdManagement());
+                } else {
+                    this.setupAdManagement();
+                }
+            }
+
+            setupAdManagement() {
+                // Find all ad containers
+                this.adContainers = document.querySelectorAll('.ad-container');
+                
+                // Setup observers for each ad container
+                this.adContainers.forEach(container => {
+                    this.setupAdObserver(container);
+                });
+
+                // Initialize AdSense ads
+                this.initializeAds();
+
+                // Setup mobile ad functionality
+                this.setupMobileAds();
+            }
+
+            setupAdObserver(container) {
+                const observer = new MutationObserver((mutations) => {
+                    this.handleAdMutation(container, mutations);
+                });
+
+                observer.observe(container, this.observerConfig);
+
+                // Also check for content immediately
+                setTimeout(() => this.checkAdContent(container), 1000);
+            }
+
+            handleAdMutation(container, mutations) {
+                let shouldCheck = false;
+                
+                mutations.forEach(mutation => {
+                    if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        shouldCheck = true;
+                    }
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'data-ad-status') {
+                        shouldCheck = true;
+                    }
+                });
+
+                if (shouldCheck) {
+                    setTimeout(() => this.checkAdContent(container), 500);
+                }
+            }
+
+            checkAdContent(container) {
+                const adElement = container.querySelector('.adsbygoogle');
+                
+                if (!adElement) {
+                    this.hideAdContainer(container);
+                    return;
+                }
+
+                // Check if ad has been filled
+                const isAdFilled = this.isAdFilled(adElement);
+                
+                if (isAdFilled) {
+                    this.showAdContainer(container);
+                } else {
+                    // Check again after a delay for slower loading ads
+                    setTimeout(() => {
+                        if (this.isAdFilled(adElement)) {
+                            this.showAdContainer(container);
+                        } else {
+                            this.hideAdContainer(container);
+                        }
+                    }, 2000);
+                }
+            }
+
+            isAdFilled(adElement) {
+                // Multiple checks to determine if ad is filled
+                
+                // Check if AdSense has marked it as filled
+                if (adElement.getAttribute('data-ad-status') === 'filled') {
+                    return true;
+                }
+
+                // Check if there are child elements (indicating ad content)
+                if (adElement.children.length > 0) {
+                    return true;
+                }
+
+                // Check if element has been given height by AdSense
+                const computedStyle = window.getComputedStyle(adElement);
+                const height = parseInt(computedStyle.height);
+                if (height > 0) {
+                    return true;
+                }
+
+                // Check for iframe (common for AdSense ads)
+                if (adElement.querySelector('iframe')) {
+                    return true;
+                }
+
+                // Check if innerHTML has been populated
+                if (adElement.innerHTML.trim() !== '') {
+                    return true;
+                }
+
+                return false;
+            }
+
+            showAdContainer(container) {
+                container.classList.add('visible');
+                container.classList.remove('error', 'loading');
+                console.log('Showing ad container:', container.id);
+            }
+
+            hideAdContainer(container) {
+                container.classList.remove('visible', 'loading');
+                container.classList.add('error');
+                console.log('Hiding ad container:', container.id);
+            }
+
+            initializeAds() {
+                // Push ads to AdSense queue
+                const ads = document.querySelectorAll('.adsbygoogle');
+                
+                ads.forEach((ad, index) => {
+                    // Add loading state
+                    const container = ad.closest('.ad-container');
+                    if (container) {
+                        container.classList.add('loading');
+                    }
+
+                    // Initialize AdSense ad
+                    try {
+                        (adsbygoogle = window.adsbygoogle || []).push({});
+                    } catch (error) {
+                        console.warn('AdSense initialization failed for ad', index, error);
+                        if (container) {
+                            this.hideAdContainer(container);
+                        }
+                    }
+                });
+
+                // Set up a global check after all ads should have loaded
+                setTimeout(() => {
+                    this.performFinalAdCheck();
+                }, 5000);
+            }
+
+            performFinalAdCheck() {
+                this.adContainers.forEach(container => {
+                    if (!container.classList.contains('visible')) {
+                        this.checkAdContent(container);
+                    }
+                });
+            }
+
+            setupMobileAds() {
+                const floatingAd = document.getElementById('floating-ad');
+                
+                if (window.innerWidth <= 768) {
+                    setTimeout(() => {
+                        const adElement = floatingAd.querySelector('.adsbygoogle');
+                        if (adElement && this.isAdFilled(adElement)) {
+                            floatingAd.classList.add('visible');
+                        }
+                    }, 5000);
+                }
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 768) {
+                        floatingAd.classList.remove('visible');
+                    } else if (!floatingAd.classList.contains('visible')) {
+                        const adElement = floatingAd.querySelector('.adsbygoogle');
+                        if (adElement && this.isAdFilled(adElement)) {
+                            setTimeout(() => {
+                                floatingAd.classList.add('visible');
+                            }, 1000);
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize Ad Manager
+        const adManager = new AdManager();
+
+        // Additional AdSense event listeners
+        window.addEventListener('load', () => {
+            // Check for AdSense specific events
+            if (window.adsbygoogle) {
+                // Monitor for AdSense fills
+                const originalPush = window.adsbygoogle.push;
+                window.adsbygoogle.push = function(ad) {
+                    const result = originalPush.call(this, ad);
+                    
+                    // Trigger ad check after AdSense processes
+                    setTimeout(() => {
+                        adManager.performFinalAdCheck();
+                    }, 1000);
+                    
+                    return result;
+                };
+            }
+        });
+
+        // Fallback for very slow connections
+        setTimeout(() => {
+            adManager.performFinalAdCheck();
+        }, 10000);
+
+        // Close floating ad function
+        function closeFloatingAd() {
+            document.getElementById('floating-ad').classList.remove('visible');
+        }
+
+    </script>
+
+    <script src="script.js" defer></script>
+    <script src="copy-functions.js" defer></script>
+    <script src="sync-inputs.js" defer></script>
+    <script src="errands-page.js"></script>
+    <script src="links-page.js" defer></script>
+    <script src="checklistcontrol.js" defer></script>
+</body>
+</html>
