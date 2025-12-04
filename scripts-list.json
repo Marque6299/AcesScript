@@ -1882,14 +1882,14 @@
     "description": "",
     "cards": [
       {
-        "content": "It was my pleasure assisting you today and I sincerely apologize that it took some time to complete [Customer Request - Rebooking freeflow]. I truly appreciate your patience with me.",
+        "content": "Thanks so much for your patience today, [Cx Name]. I know it took a little longer than expected, but I wanted to make sure everything was double-checked so the information I share is accurate and really addresses your concerns.",
         "created": "2025-02-26T09:57:39.188Z",
-        "updated": "2025-02-26T09:57:39.188Z"
+        "updated": "2025-12-03T09:57:39.188Z"
       },
       {
-        "content": "I truly apologize for the delay in completing the [Customer Request - Rebooking freeflow]. It was a pleasure helping you today and I sincerely thank you for bearing with me. ",
+        "content": "I really appreciate you for staying with me today, [Cx Name]. It ran a bit longer because I wanted to double-check everything and make sure you got the right information for all your queries.",
         "created": "2025-02-26T09:57:39.188Z",
-        "updated": "2025-02-26T09:57:39.188Z"
+        "updated": "2025-12-03T09:57:39.188Z"
       }
     ],
     "tags": [],
@@ -8057,22 +8057,33 @@
   {
     "id": "CEP-Close",
     "category": "chat",
-    "title": "CEP-Close",
+    "title": "Customer doesn't respond 1st Warning ETG/B.com UK",
+    "description": "",
+    "cards": [
+      {
+        "content": "Hi, I wanted to check in to see if you're still with us. Please reply so I can continue assisting you. If I don't hear from you in the next 3 minutes, the chat will close due to inactivity. Don't worry - you can always reach out again whenever you’re ready. We’re here to help!",
+        "created": "2025-12-03T14:13:53.038Z",
+        "updated": "2025-12-03T14:14:16.254Z"
+      }
+    ],
+    "tags": [],
+    "created": "2025-12-03",
+    "updated": "2025-12-03T14:14:31.332Z"
+  },
+  {
+    "id": "CEP-Close",
+    "category": "chat",
+    "title": "Close ETG/B.com UK",
     "description": "",
     "cards": [
       {
         "content": "Thank you for using our service. Should you require any further assistance, please don’t hesitate to get in touch. Wishing you a wonderful day ahead!",
-        "created": "2025-08-12T14:13:53.038Z",
-        "updated": "2025-08-12T14:14:16.254Z"
-      },
-      {
-        "content": "Thank you for contacting us. Should you require any further assistance, please don’t hesitate to get in touch. Wishing you a wonderful day ahead!",
-        "created": "2025-08-12T14:14:18.010Z",
-        "updated": "2025-08-12T14:14:21.900Z"
+        "created": "2025-12-03T14:13:53.038Z",
+        "updated": "2025-12-03T14:14:16.254Z"
       }
     ],
     "tags": [],
-    "created": "2025-08-12",
-    "updated": "2025-08-12T14:14:31.332Z"
+    "created": "2025-12-03",
+    "updated": "2025-12-03T14:14:31.332Z"
   }
 ]
