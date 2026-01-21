@@ -359,14 +359,16 @@ body {
     font-size: 14px;
 }
 
-#\>\>\>\>\>C-Sat\ Scripts\<\<\<\<\<-nav{
+#\>\>\>\>\>\>\>\>\>\>C-SAT\ SCRIPTS\<\<\<\<\<\<\<\<\<\<-nav{
     background: #d9ff00;
     color: #000000;
+    font-weight: 900;
     animation: blinking-color 1s infinite;
 }
 
-#\>\>\>\>\>C-Sat\ Scripts\<\<\<\<\<-nav.active{
+#\>\>\>\>\>C-SAT\ SCRIPTS\<\<\<\<\<-nav.active{
     background: #BC6C25;
+    font-weight: 900;
     animation: blinking-colors 1s infinite;
 }
 
