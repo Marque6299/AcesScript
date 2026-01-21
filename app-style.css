@@ -359,7 +359,7 @@ body {
     font-size: 14px;
 }
 
-#\>\>\>\>\>\>\>\>\>\>C-SAT\ SCRIPTS\<\<\<\<\<\<\<\<\<\<-nav{
+#\>\>\>\>\>\>\>\>\>\>\ \ \ \ C-SAT\ SCRIPTS\ \ \ \ \<\<\<\<\<\<\<\<\<\<-nav{
     background: #d9ff00;
     color: #000000;
     font-weight: 900;
@@ -367,7 +367,7 @@ body {
     animation: bg-color-blink 1s infinite;
 }
 
-#\>\>\>\>\>C-SAT\ SCRIPTS\<\<\<\<\<-nav.active{
+#\>\>\>\>\>\>\>\>\>\>\ \ \ \ C-SAT\ SCRIPTS\ \ \ \ \<\<\<\<\<\<\<\<\<\<-nav.active{
     background: #BC6C25;
 }
 
