@@ -319,69 +319,6 @@
     "updated": "2025-02-26T09:57:39.188Z"
   },
   {
-    "id": "Hold",
-    "category": "chat",
-    "title": "Putting customer on hold",
-    "description": "",
-    "cards": [
-      {
-        "content": "Please give me a moment to review your information. It won't take more than 5 minutes.",
-        "created": "2025-02-26T09:57:39.188Z",
-        "updated": "2025-02-26T09:57:39.188Z"
-      }
-    ],
-    "tags": [],
-    "created": "2025-02-24",
-    "updated": "2025-02-26T09:57:39.188Z"
-  },
-  {
-    "id": "Hold",
-    "category": "chat",
-    "title": "Refresh/Extend Hold",
-    "description": "",
-    "cards": [
-      {
-        "content": " Thank you for waiting. But I will need 5 more minutes to work on your request.",
-        "created": "2025-02-26T09:57:39.188Z",
-        "updated": "2025-02-26T09:57:39.188Z"
-      },
-      {
-        "content": "Thank you for your continued patience. I will require a 5 extra minutes to thoroughly work on your request.",
-        "created": "2025-02-26T09:57:39.188Z",
-        "updated": "2025-02-26T09:57:39.188Z"
-      },
-      {
-        "content": "I appreciate your understanding during this time. I will need a 5 more minutes to ensure your request is handled properly.",
-        "created": "2025-02-26T09:57:39.188Z",
-        "updated": "2025-02-26T09:57:39.188Z"
-      },
-      {
-        "content": "I appreciate your patience. I would be needing a few additional minutes to complete your request. I'll give you update within 5 minutes.",
-        "created": "2025-02-26T09:57:39.188Z",
-        "updated": "2025-02-26T09:57:39.188Z"
-      }
-    ],
-    "tags": [],
-    "created": "2025-02-24",
-    "updated": "2025-02-26T09:57:39.188Z"
-  },
-  {
-    "id": "Hold",
-    "category": "chat",
-    "title": "Customer Proceed with request",
-    "description": "",
-    "cards": [
-      {
-        "content": "Thank you. Please give me a moment to process your request. I will need an additional 5 minutes, please.",
-        "created": "2025-02-26T09:57:39.188Z",
-        "updated": "2025-02-26T09:57:39.188Z"
-      }
-    ],
-    "tags": [],
-    "created": "2025-02-24",
-    "updated": "2025-02-26T09:57:39.188Z"
-  },
-  {
     "id": "Payment",
     "category": "chat",
     "title": "When sending payment link on email",
