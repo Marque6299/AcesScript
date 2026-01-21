@@ -364,11 +364,11 @@ body {
     color: #000000;
     font-weight: 900;
     animation: blinking-color 1s infinite;
-    animation: bg-color-blink 1s infinite;
 }
 
 #\>\>\>\>\>\>\>\>\>\>\ \ \ \ C-SAT\ SCRIPTS\ \ \ \ \<\<\<\<\<\<\<\<\<\<-nav.active{
     background: #BC6C25;
+    animation: bg-color-blink 1s infinite;
 }
 
 @keyframes blinking-color {
@@ -384,13 +384,13 @@ body {
 }
 @keyframes bg-color-blink {
     0%{
-        background-color: #d9ff00;
+        background-color: #BC6C25;
     }
     50%{
         background-color: #fdffff;
     }
     100%{
-        background-color:#d9ff00;
+        background-color:#BC6C25;
     }
 }
 
