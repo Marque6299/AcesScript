@@ -368,31 +368,17 @@ body {
 
 #\>\>\>\>\>C-SAT\ SCRIPTS\<\<\<\<\<-nav.active{
     background: #BC6C25;
-    font-weight: 900;
-    animation: blinking-colors 1s infinite;
 }
 
 @keyframes blinking-color {
     0%{
-        color: #006eff;
+        color: #15ff00;
     }
     50%{
         color: #a81308;
     }
     100%{
-        color:#006eff;
-    }
-}
-
-@keyframes blinking-colors {
-    0%{
-        color: #BC6C25;
-    }
-    50%{
-        color: #080ba8;
-    }
-    100%{
-        color:#BC6C25;
+        color:#15ff00;
     }
 }
 
