@@ -372,13 +372,13 @@ body {
 
 @keyframes blinking-color {
     0%{
-        color: #15ff00;
+        color: #06000e;
     }
     50%{
         color: #a81308;
     }
     100%{
-        color:#15ff00;
+        color:#ff009d;
     }
 }
 
