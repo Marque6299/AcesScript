@@ -34,6 +34,13 @@
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     height: 100%;
     width: 100%;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.link-list.animate-in {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .link-list:has(h3 strong) {

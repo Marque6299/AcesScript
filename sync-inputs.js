@@ -34,18 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Default color for modules not specified in the map
     const defaultColor = '#f9f9f9';
 
-    fetch(jsonFilePath)
-        .then(response => response.json())
-        .then(data => {
-            generateNavButtons(data);
-            generateMergedScriptModules(data);
-            initializeAllFunctionality();
-            initializeNavigation();
-            updateNavBadges(); // Add badges to nav buttons based on new/updated cards
-            applyCardBackgroundColors(); // Apply background colors to cards
-            addCardHoverEffects(); // Add hover effects to cards
-        })
-        .catch(error => console.error('Failed to load scripts:', error));
+    // Use local SCRIPTS_DATA constant
+    try {
+        generateNavButtons(SCRIPTS_DATA);
+        generateMergedScriptModules(SCRIPTS_DATA);
+        initializeAllFunctionality();
+        initializeNavigation();
+        updateNavBadges(); // Add badges to nav buttons based on new/updated cards
+        applyCardBackgroundColors(); // Apply background colors to cards
+        addCardHoverEffects(); // Add hover effects to cards
+    } catch (error) {
+        console.error('Failed to load scripts:', error);
+    }
 
     function generateNavButtons(scripts) {
         // Clear existing nav buttons
@@ -78,6 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const textSpan = document.createElement('span');
             textSpan.textContent = buttonText;
             button.appendChild(textSpan);
+            
+            // Apply color coding from moduleColorMap
+            if (moduleColorMap[id]) {
+                button.style.background = moduleColorMap[id];
+                button.style.color = '#000000';
+                button.style.fontWeight = '600';
+            }
             
             scriptNavContainer.appendChild(button);
         });
@@ -238,6 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Add or remove badge accordingly
             if (hasNewOrUpdated) {
+                navButton.classList.add('has-updates');
                 if (!navButton.querySelector('.nav-badge')) {
                     const badge = document.createElement('span');
                     badge.className = 'nav-badge';
@@ -245,6 +253,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     navButton.appendChild(badge);
                 }
             } else {
+                navButton.classList.remove('has-updates');
                 const existingBadge = navButton.querySelector('.nav-badge');
                 if (existingBadge) {
                     existingBadge.remove();
@@ -321,6 +330,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 .nav-btn {
                     position: relative;
+                }
+                
+                .nav-btn.has-updates {
+                    animation: button-blink-animation 1s infinite alternate !important;
+                }
+                
+                @keyframes button-blink-animation {
+                    0% { filter: brightness(1); box-shadow: 0 0 5px rgba(255, 255, 255, 0.2); }
+                    100% { filter: brightness(1.3); box-shadow: 0 0 15px rgba(255, 255, 255, 0.8); }
                 }
                 
                 @keyframes blink-animation {

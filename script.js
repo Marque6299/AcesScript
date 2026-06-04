@@ -19,7 +19,14 @@ const DOM = {
     },
     resetButton: document.querySelector('.global-script-reset'),
     agentInput: document.getElementById('user'),
-    customerInput: document.getElementById('customer')
+    customerInput: document.getElementById('customer'),
+    noSearchResults: document.querySelector('.no-search-results'),
+    ffTextArea: document.getElementById('ff-txt'),
+    ffClearBtn: document.getElementById('ff-clear-btn'),
+    ffCharCount: document.getElementById('ff-char-count'),
+    ffCopyBtn: document.getElementById('ff-copy-btn'),
+    ffDownloadBtn: document.getElementById('ff-download-btn'),
+    ffTimestampBtn: document.getElementById('ff-timestamp-btn')
 };
 
 // Create search clear button element
@@ -116,6 +123,10 @@ const SearchManager = {
         // Restore channel-based visibility
         const currentChannel = DOM.channelSelect.value;
         ScriptManager.updateTitles(currentChannel);
+        
+        if (DOM.noSearchResults) {
+            DOM.noSearchResults.classList.remove('visible');
+        }
     },
 
     // Update clear button visibility based on search input
@@ -205,6 +216,13 @@ const SearchManager = {
 
         if (!hasResults) {
             console.log('No matching scripts found');
+            if (DOM.noSearchResults) {
+                DOM.noSearchResults.classList.add('visible');
+            }
+        } else {
+            if (DOM.noSearchResults) {
+                DOM.noSearchResults.classList.remove('visible');
+            }
         }
     },
 
@@ -511,6 +529,74 @@ function initializeEventListeners() {
             TooltipManager.handleTooltip(item, tooltip, false)
         );
     });
+
+    // Freeflow Tools
+    if (DOM.ffTextArea) {
+        if (DOM.ffCharCount) {
+            DOM.ffTextArea.addEventListener('input', () => {
+                const count = DOM.ffTextArea.value.length;
+                DOM.ffCharCount.textContent = `${count} character${count !== 1 ? 's' : ''}`;
+            });
+        }
+
+        if (DOM.ffClearBtn) {
+            DOM.ffClearBtn.addEventListener('click', () => {
+                DOM.ffTextArea.value = '';
+                if (DOM.ffCharCount) DOM.ffCharCount.textContent = '0 characters';
+                DOM.ffTextArea.focus();
+            });
+        }
+
+        if (DOM.ffCopyBtn) {
+            DOM.ffCopyBtn.addEventListener('click', () => {
+                if (DOM.ffTextArea.value) {
+                    navigator.clipboard.writeText(DOM.ffTextArea.value).then(() => {
+                        const originalText = DOM.ffCopyBtn.innerHTML;
+                        DOM.ffCopyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+                        setTimeout(() => DOM.ffCopyBtn.innerHTML = originalText, 2000);
+                    }).catch(err => console.error('Failed to copy text: ', err));
+                }
+            });
+        }
+
+        if (DOM.ffDownloadBtn) {
+            DOM.ffDownloadBtn.addEventListener('click', () => {
+                if (DOM.ffTextArea.value) {
+                    const blob = new Blob([DOM.ffTextArea.value], { type: 'text/plain' });
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `AcesScript_Notes_${new Date().toISOString().slice(0, 10)}.txt`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }
+            });
+        }
+
+        if (DOM.ffTimestampBtn) {
+            DOM.ffTimestampBtn.addEventListener('click', () => {
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                const dateStr = now.toLocaleDateString();
+                const timestamp = `\n[${dateStr} ${timeStr}] `;
+                
+                const start = DOM.ffTextArea.selectionStart;
+                const end = DOM.ffTextArea.selectionEnd;
+                const text = DOM.ffTextArea.value;
+                
+                // If it's the very beginning of an empty area, omit the leading newline
+                const finalTimestamp = (start === 0 && text.length === 0) ? timestamp.trimStart() : timestamp;
+                
+                DOM.ffTextArea.value = text.substring(0, start) + finalTimestamp + text.substring(end);
+                DOM.ffTextArea.selectionStart = DOM.ffTextArea.selectionEnd = start + finalTimestamp.length;
+                DOM.ffTextArea.focus();
+                
+                DOM.ffTextArea.dispatchEvent(new Event('input'));
+            });
+        }
+    }
 }
 
 // Initialize application

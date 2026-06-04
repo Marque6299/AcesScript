@@ -527,7 +527,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         
         // Create CSV content
-        let csvContent = 'Interaction ID,Archived Date,Customer Name,DPA,Relationship,Query,Resolution,YY RL/Ticket,Ghostline,Validated By,Notes\n';
+        let csvContent = 'Edwin Order#,Interaction ID,Archived Date,Customer Name,DPA,Relationship,Query,Resolution,YY RL/Ticket,Ghostline,Validated By,Notes\n';
         
         archivedErrands.forEach(errand => {
             // Properly escape fields that might contain commas
@@ -643,24 +643,33 @@ document.addEventListener('DOMContentLoaded', function () {
             noArchivesMessage.style.display = 'none';
             archivedErrands.forEach((errand, index) => {
                 const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${errand.edwinId}</td>
-                    <td>${errand.interactionId}</td>
-                    <td>${errand.customerName}</td>
-                    <td>${errand.dpa || 'N/A'}</td>
-                    <td>${errand.relationship || 'N/A'}</td>
-                    <td>${errand.query || 'N/A'}</td>
-                    <td>${errand.resolution || 'N/A'}</td>
-                    <td>${errand.yyrl || 'N/A'}</td>
-                    <td>${errand.ghostline || 'N/A'}</td>
-                    <td>${errand.validator || 'N/A'}</td>
-                    <td>${errand.notes || 'N/A'}</td>
-                    <td>${errand.archivedDate}</td>
-                    <td>
-                        <button class="restore-btn" data-index="${index}">Restore</button>
-                        <button class="delete-btn" data-index="${index}">Delete</button>
-                    </td>
+                
+                // Helper to safely append text cells
+                const addCell = (text) => {
+                    const td = document.createElement('td');
+                    td.textContent = text;
+                    row.appendChild(td);
+                };
+                
+                addCell(errand.edwinId);
+                addCell(errand.interactionId);
+                addCell(errand.customerName);
+                addCell(errand.dpa || 'N/A');
+                addCell(errand.relationship || 'N/A');
+                addCell(errand.query || 'N/A');
+                addCell(errand.resolution || 'N/A');
+                addCell(errand.yyrl || 'N/A');
+                addCell(errand.ghostline || 'N/A');
+                addCell(errand.validator || 'N/A');
+                addCell(errand.notes || 'N/A');
+                addCell(errand.archivedDate);
+                
+                const actionCell = document.createElement('td');
+                actionCell.innerHTML = `
+                    <button class="restore-btn" data-index="${index}">Restore</button>
+                    <button class="delete-btn" data-index="${index}">Delete</button>
                 `;
+                row.appendChild(actionCell);
                 tableBody.appendChild(row);
             });
 

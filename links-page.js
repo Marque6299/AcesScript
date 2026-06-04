@@ -3,6 +3,13 @@
 document.addEventListener('DOMContentLoaded', () => {
     const linkButtons = document.querySelectorAll('.link-list');
     
+    // Staggered entrance animation
+    linkButtons.forEach((button, index) => {
+        setTimeout(() => {
+            button.classList.add('animate-in');
+        }, index * 100 + 100);
+    });
+    
     // Add hover sound effect and visual feedback
     linkButtons.forEach(button => {
         // Add ripple effect on click

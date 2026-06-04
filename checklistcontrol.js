@@ -3,14 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const checklistCanvas = document.querySelector('.checklist-canvas');
     const jsonFilePath = 'https://altaces.netlify.app/checklist.json';
 
-    // Fetch the checklist data
-    fetch(jsonFilePath)
-        .then(response => response.json())
-        .then(data => {
-            generateChecklistModules(data);
-            initializeChecklistNavigation();
-        })
-        .catch(error => console.error('Failed to load checklist data:', error));
+    // Use the local CHECKLIST_DATA constant
+    try {
+        generateChecklistModules(CHECKLIST_DATA);
+        initializeChecklistNavigation();
+    } catch (error) {
+        console.error('Failed to load checklist data:', error);
+    }
 
     function generateChecklistModules(checklists) {
         // Clear existing content

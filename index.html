@@ -223,7 +223,7 @@
     <div class="app-container">
         <div class="head-banner">
             <div class="head-logo">
-                <img src="https://altaces.netlify.app/Aceslogo.png" alt="Aceslogo">
+                <img src="Aceslogo.png" alt="Aceslogo">
             </div>
             <div class="searchbar-group">
                 <select id="channel-selection">
@@ -302,6 +302,13 @@
                 <div class="sub-page" id="notes-page">
                     <div class="freeflow-header">
                         Freeflow Notes
+                    </div>
+                    <div class="freeflow-toolbar">
+                        <button class="freeflow-tool-btn" id="ff-copy-btn" title="Copy to clipboard"><i class="fa-solid fa-copy"></i> Copy</button>
+                        <button class="freeflow-tool-btn" id="ff-download-btn" title="Download as text file"><i class="fa-solid fa-download"></i> Save</button>
+                        <button class="freeflow-tool-btn" id="ff-timestamp-btn" title="Insert current time"><i class="fa-solid fa-clock"></i> Timestamp</button>
+                        <button class="freeflow-clear-btn" id="ff-clear-btn"><i class="fa-solid fa-trash"></i> Clear</button>
+                        <span class="freeflow-char-count" id="ff-char-count">0 characters</span>
                     </div>
                     <div class="freeflow-input">
                         <textarea name="freeflow-textarea" id="ff-txt" placeholder="Your notes here..."></textarea>
@@ -480,6 +487,10 @@
                         <button id="opening-nav" class="nav-btn active">Opening</button>
                     </div>
                     <div class="script-canvas"></div>
+                    <div class="no-search-results">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <p>No matching scripts found</p>
+                    </div>
                     <!-- Content Ad -->
                     <div class="ad-container content-ad" id="script-content-ad">
                         <ins class="adsbygoogle"
@@ -736,6 +747,7 @@
 
             setupMobileAds() {
                 const floatingAd = document.getElementById('floating-ad');
+                if (!floatingAd) return; // Prevent crash if element doesn't exist
                 
                 if (window.innerWidth <= 768) {
                     setTimeout(() => {
@@ -798,10 +810,13 @@
 
     <script src="script.js" defer></script>
     <script src="copy-functions.js" defer></script>
+    <script src="scripts-data.js" defer></script>
     <script src="sync-inputs.js" defer></script>
     <script src="errands-page.js"></script>
     <script src="links-page.js" defer></script>
+    <script src="checklist-data.js" defer></script>
     <script src="checklistcontrol.js" defer></script>
 </body>
 
 </html>
+
