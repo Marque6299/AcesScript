@@ -7621,7 +7621,7 @@
     "description": "Rebooking Change Breakdown",
     "cards": [
       {
-        "content": "Currently, the charges for rebooking, including the tax and/or fare difference are listed below:<br>Total to pay for change: [Total payment for change]<br>-Breakdown of charges-<br>Airline change fee: [YY fee]<br>Handling fee: [Handling Fee]<br>Fare difference: [Fare Difference]<br>New flight details :<br><br>[-details-]<br><br>Would you like to proceed with the changes?.",
+        "content": "Currently, the charges for rebooking, including the tax and/or fare difference are listed below:<br>Total to pay for change: [Total payment for change]<br>-Breakdown of charges-<br>Airline change fee: [YY fee]<br>Handling fee: [Handling Fee]<br>Fare difference: [Fare Difference]<br>New flight details :<br><br>[-details-]<br><br><strong>Please note that any add-on products such as (baggage/seats/meals) is not transferable and subject to airlines approval.</strong><br><br>Would you like to proceed with the changes?.",
         "created": "2025-08-12T14:04:52.422Z",
         "updated": "2025-08-12T14:06:46.716Z"
       }
