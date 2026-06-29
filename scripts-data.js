@@ -908,7 +908,7 @@
     "description": "",
     "cards": [
       {
-        "content": "Your booking is cancelled, and you will be getting a confirmation email after this conversation. On average, processing the refund by airline takes about 5 business days, followed by an additional 6 days for our internal handling. Therefore, you can expect to receive your refund within 10 to 15 business days. We are currently facing a high volume of refund requests, and are doing our best to prioritize based on their submission date and other factors. Although we are unable to give you a precise time frame, please be assured that we are doing our best to process your request as soon as possible. We'll send you an email as soon as your refund is finalized. Thank you for your understanding.",
+        "content": "Your booking is cancelled, and you will be getting a confirmation email after this conversation. On average, processing the refund by airline takes about 5 business days, followed by an additional 6 days for our internal handling. Therefore, you can expect to receive your refund within 15 to 20 business days. We are currently facing a high volume of refund requests, and are doing our best to prioritize based on their submission date and other factors. Although we are unable to give you a precise time frame, please be assured that we are doing our best to process your request as soon as possible. We'll send you an email as soon as your refund is finalized. Thank you for your understanding.",
         "created": "2025-02-26T09:57:39.188Z",
         "updated": "2025-02-26T09:57:39.188Z"
       }
@@ -977,7 +977,7 @@
         "updated": "2025-02-26T09:57:39.188Z"
       },
       {
-        "content": "Please note: <br>On average, processing the refund by the airline takes about 5 business days, followed by an additional 6 days for our internal handling. Therefore, you can expect to receive your refund within 10 to 15 business days. <br>Cancellation fees will apply which are listed below: <br>Total amount to pay for cancellation: [Total Cancelation Fee Amount] <br>-Breakdown- <br>Airline cancellation fee: [Airline Cancelation fee] <br>Handling fee: [Cancelation Handling fee] <br>Shall I proceed with the cancellation?",
+        "content": "Please note: <br>On average, processing the refund by the airline takes about 5 business days, followed by an additional 6 days for our internal handling. Therefore, you can expect to receive your refund within 15 to 20 business days. <br>Cancellation fees will apply which are listed below: <br>Total amount to pay for cancellation: [Total Cancelation Fee Amount] <br>-Breakdown- <br>Airline cancellation fee: [Airline Cancelation fee] <br>Handling fee: [Cancelation Handling fee] <br>Shall I proceed with the cancellation?",
         "created": "2025-02-26T09:57:39.188Z",
         "updated": "2025-02-26T09:57:39.188Z"
       }
