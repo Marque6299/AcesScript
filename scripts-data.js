@@ -3556,7 +3556,7 @@ window.SCRIPTS_DATA = [
     updated: "2025-03-04T19:33:17.398Z",
     cards: [
       {
-        content: `Hi, [Cx Name], this is [Agent name]. I will take a quick look at your request and be with you shortly. Thanks for your patience!`,
+        content: `Hi, [Cx Name], this is [Agent Name]. I will take a quick look at your request and be with you shortly. Thanks for your patience!`,
         created: "2025-03-04T19:01:15.975Z",
         updated: "2025-03-04T19:33:14.319Z",
       },
@@ -6078,7 +6078,7 @@ window.SCRIPTS_DATA = [
     updated: "2025-03-05T19:33:11.043Z",
     cards: [
       {
-        content: `Thank you for confirming your booking. I'm <?agent name?>. May I have your name, please?  (customer gives name) Thank you. How can I assist you today`,
+        content: `Thank you for confirming your booking. I'm [Agent Name]. May I have your name, please?  (customer gives name) Thank you. How can I assist you today`,
         created: "2025-03-05T19:32:53.926Z",
         updated: "2025-03-05T19:33:09.683Z",
       },
@@ -6338,7 +6338,7 @@ window.SCRIPTS_DATA = [
     updated: "2025-03-05T19:38:40.485Z",
     cards: [
       {
-        content: `"One last thing before you go, “CUSTOMER NAME”. With our new and improved Gotogate app, you can access all your booking details, receive updates on your trip, and, as a special gift from us, automatic check-in will be FREE! For more details, please head to the app store."`,
+        content: `"One last thing before you go, [Cx Name]. With our new and improved Gotogate app, you can access all your booking details, receive updates on your trip, and, as a special gift from us, automatic check-in will be FREE! For more details, please head to the app store."`,
         created: "2025-03-05T19:38:19.031Z",
         updated: "2025-03-05T19:38:39.474Z",
       },
@@ -8556,7 +8556,7 @@ window.SCRIPTS_DATA = [
     updated: "2025-08-12T14:11:18.666Z",
     cards: [
       {
-        content: `Your booking has been successfully canceled, [Customer Name]. In accordance with the airline’s policy, a future travel credit/voucher has been issued in place of a refund. This credit is valid for [voucher validity] months and can be used toward a future booking.<br><br>If you have any questions or need assistance using your voucher, please contact the airline’s customer support at [YY phone number] and provide them with your reference number: [YY reference number].<br><br>Is there anything else I can assist you with today?`,
+        content: `Your booking has been successfully canceled, [Cx Name]. In accordance with the airline’s policy, a future travel credit/voucher has been issued in place of a refund. This credit is valid for [voucher validity] months and can be used toward a future booking.<br><br>If you have any questions or need assistance using your voucher, please contact the airline’s customer support at [YY phone number] and provide them with your reference number: [YY reference number].<br><br>Is there anything else I can assist you with today?`,
         created: "2025-08-12T14:09:46.821Z",
         updated: "2025-08-12T14:11:09.356Z",
       },

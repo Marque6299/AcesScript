@@ -55,3 +55,9 @@ Written without a browser. Do a live pass: tab through header -> tabs -> card ->
 - **Ads**: ad units set in `config.js` (`end`, `banner`, `links`); the vertical rail is removed entirely. Every ad container is zero-height and invisible until AdSense reports `filled` (it then expands; unfilled ones stay gone). Links feed now sits under the tiles.
 - **Freeflow**: page is a flex column; the text area takes the remaining height and scrolls inside itself.
 - Tip: in AdSense turn Auto ads off for this site, otherwise Google may add placements beside your manual units.
+
+## Round 5: Google Analytics 4
+- The GA tag is added by Netlify (Site configuration > Build & deploy > Post processing > Snippet injection). Do **not** also paste it into `index.html`.
+- `assets/js/ga-bridge.js` listens for the tracker's `aces:track` event and forwards each one to GA4 with `gtag('event', ...)`. Dots in event names become underscores (`scripts.card.copy_ok` -> `scripts_card_copy_ok`). Card events add `card_id` and a readable `card_name` ("Script title #N"). `ads.*` events stay local (see `SKIP` in the file).
+- Register these as GA4 custom dimensions (Admin > Data display > Custom definitions, event scope): `card_name`, `tab`, `channel`, `label`, `app_page`, `option`.
+- Do Not Track and `window.ACES_TRACK_OFF` still disable events (tracker.js is the single gate). Not tested against a live GA property.

@@ -25,7 +25,7 @@ const CONFIG = {
 let globalTooltip;
 
 // Global state manager for synchronized editing
-const ALIASES = { '[agent name]': 'agent', '[cx name]': 'customer', '[customer name]': 'customer', '[brand]': 'brand', '[brand name]': 'brand', '[our brand]': 'brand', '[deadline]': 'deadline' };
+const ALIASES = { '[Agent Name]': 'agent', '[Cx Name]': 'customer', '[Customer Name]': 'customer', '[brand]': 'brand', '[brand name]': 'brand', '[our brand]': 'brand', '[deadline]': 'deadline' };
 const groupKey = (t) => ALIASES[(t || '').toLowerCase()] || t;   // variants share one value; stored text is never edited
 const UNFILLED = /##[^#\n]+##|\bXYZ\b|\bX{2,}\b|\bCUSTOMER NAME\b/;
 
