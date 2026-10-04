@@ -1,0 +1,4 @@
+/data/*
+  Cache-Control: no-cache
+/assets/*
+  Cache-Control: no-cache

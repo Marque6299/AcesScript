@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+    <meta name="google-adsense-account" content="ca-pub-6978764838614552">
+    <link rel="stylesheet" href="app-style.css">
+    <link rel="stylesheet" href="errands-style.css">
+    <link rel="stylesheet" href="links-style.css">
+    <link rel="stylesheet" href="assets/css/aces-upgrade.css">
+    <meta name="description" content="ACES: script, errand-note and checklist assistant for chat and voice agents.">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+    <title>A C E S</title>
+    <!-- AdSense library (units are placed by assets/js/ads.js; configure slots in assets/js/config.js) -->
+     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6978764838614552"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <div class="app-container">
+        <div class="head-banner">
+            <div class="head-logo" data-track="header.logo.click">
+                <img src="Aceslogo.png" alt="Aceslogo">
+            </div>
+            <div class="searchbar-group">
+                <select id="channel-selection" aria-label="Channel">
+                    <option value="all">All</option>
+                    <option value="chat">Chat</option>
+                    <option value="voice">Voice</option>
+                </select>
+                <input type="text" id="search-input" placeholder="Search scripts (press /)" aria-label="Search scripts" autocomplete="off">
+                <button id="search-action" aria-label="Search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+            <div class="quick-link">
+                <div class="fd-calculator-link"><a href="https://fdcalc.netlify.app" target="_blank" rel="noopener noreferrer" data-track="header.fdcalc.click" aria-label="FD Calculator (opens in a new tab)" title="FD Calculator">
+                        <i class="fa-solid fa-calculator"></i>
+                        <h3>FD Calculator</h3>
+                    </a></div>
+            </div>
+            <div class="script-canvas-reset">
+                <button class="global-script-reset" aria-label="Reset all fields" title="Reset all fields" data-track="header.reset.click">
+                    <i class="fa-solid fa-trash-can-arrow-up"></i>
+                </button>
+            </div>
+            <div class="customer-input">
+                <input type="text" id="customer" placeholder="Customer Name" aria-label="Customer name" autocomplete="off">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <div class="agent-user-input">
+                <input type="text" id="user" placeholder="Agent Name" aria-label="Agent name" autocomplete="nickname">
+                <i class="fa-solid fa-user-secret"></i>
+            </div>
+        </div>
+        <div class="app-body">
+            <nav class="side-panel" aria-label="Main sections">
+                <div class="nav-item active">
+                    <button id="script-page-action" aria-label="Scripts" data-track="nav.rail.click" data-track-page="scripts">
+                        <i class="fa-solid fa-scroll"></i>
+                    </button>
+                    <h3>Scripts</h3>
+                    <div class="nav-tooltip">Scripts</div>
+                </div>
+                <div class="nav-item">
+                    <button id="errands-page-action" aria-label="Errand notes" data-track="nav.rail.click" data-track-page="errands">
+                        <i class="fa-solid fa-clipboard"></i>
+                    </button>
+                    <h3>Errand-Notes</h3>
+                    <div class="nav-tooltip">Errands</div>
+                </div>
+                <div class="nav-item">
+                    <button id="notes-page-action" aria-label="Free-flow notes" data-track="nav.rail.click" data-track-page="notes">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                    </button>
+                    <h3>Free-flow</h3>
+                    <div class="nav-tooltip">Freeflow Notes</div>
+                </div>
+                <div class="nav-item">
+                    <button id="check-list-page-action" aria-label="Process checklist" data-track="nav.rail.click" data-track-page="checklist">
+                        <i class="fa-solid fa-list-check"></i>
+                    </button>
+                    <h3>Checklist</h3>
+                    <div class="nav-tooltip">Process Checklist</div>
+                </div>
+                <div class="nav-item">
+                    <button id="links-page-action" aria-label="Links" data-track="nav.rail.click" data-track-page="links">
+                        <i class="fa-solid fa-link"></i></button>
+                    <h3>Links</h3>
+                    <div class="nav-tooltip">Links</div>
+                </div>
+            </nav>
+            <main class="main-page" id="main-content" tabindex="-1">
+                <!--Freeflow Notes-->
+                <div class="sub-page" id="notes-page">
+                    <div class="freeflow-header">
+                        Freeflow Notes
+                    </div>
+                    <div class="freeflow-toolbar">
+                        <button class="freeflow-tool-btn" id="ff-copy-btn" data-track="freeflow.copy" title="Copy to clipboard"><i class="fa-solid fa-copy"></i> Copy</button>
+                        <button class="freeflow-tool-btn" id="ff-download-btn" data-track="freeflow.save" title="Download as text file"><i class="fa-solid fa-download"></i> Save</button>
+                        <button class="freeflow-tool-btn" id="ff-timestamp-btn" data-track="freeflow.timestamp" title="Insert current time"><i class="fa-solid fa-clock"></i> Timestamp</button>
+                        <button class="freeflow-clear-btn" id="ff-clear-btn" data-track="freeflow.clear"><i class="fa-solid fa-trash"></i> Clear</button>
+                        <span class="freeflow-char-count" id="ff-char-count">0 characters</span>
+                    </div>
+                    <div class="freeflow-input">
+                        <textarea name="freeflow-textarea" id="ff-txt" aria-label="Freeflow notes" placeholder="Your notes here..."></textarea>
+                    </div>
+                </div>
+                <!--Freeflow Notes End-->
+
+                <!--Errands Note-->
+                <div class="sub-page" id="errands-page">
+                    <div class="errands-header">
+                        Errand Notes
+                    </div>
+                    <div class="twin-form-box">
+                        <form class="form-container" aria-labelledby="customer1-heading">
+                            <h2 id="customer1-heading" class="customer-heading">Customer 1</h2>
+                            <div class="form-area">
+                                <div class="input-pair">
+                                    <label for="input-edwin-id-1" class="input-label">Edwin Order #: </label>
+                                    <input type="text" name="input-edwin-id" id="input-edwin-id-1" placeholder="Edwin Order #" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-interaction-id-1" class="input-label">Interaction ID: </label>
+                                    <input type="text" name="input-interaction-id" id="input-interaction-id-1" placeholder="Interaction ID" class="input-field" aria-required="true">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-cxname-1" class="input-label">Customer Name: </label>
+                                    <input type="text" name="input-cxname" id="input-cxname-1" placeholder="Customer Name" class="input-field" aria-required="true">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-dpa-1" class="input-label">DPA: </label>
+                                    <input type="text" name="input-dpa" id="input-dpa-1" placeholder="DPA" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-relationship-1" class="input-label">Relationship: </label>
+                                    <input type="text" name="input-relationship" id="input-relationship-1" placeholder="Relationship" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-query-1" class="input-label">Query: </label>
+                                    <input type="text" name="input-query" id="input-query-1" placeholder="Query" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-resolution-1" class="input-label">Resolution: </label>
+                                    <input type="text" name="input-resolution" id="input-resolution-1" placeholder="Resolution" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-yyrl-1" class="input-label">YY RL/Ticket No. Provided: </label>
+                                    <input type="text" name="input-yyrl" id="input-yyrl-1" placeholder="YY RL/Ticket No. Provided" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-ghostline-1" class="input-label">Ghostline:</label>
+                                    <input type="text" name="input-ghostline" id="input-ghostline-1" placeholder="Ghostline" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-validator-1" class="input-label">Validated by:</label>
+                                    <input type="text" name="input-validator" id="input-validator-1" placeholder="Validated by" class="input-field">
+                                </div>
+                            </div>
+                            <div class="notes-area">
+                                <textarea name="notes" id="notes-1" aria-label="Customer 1 notes" placeholder="Add your notes here..."></textarea>
+                            </div>
+                            <div class="form-action">
+                                <button type="button" class="copy-button" data-track="errands.form.copy"><i class="fa-solid fa-copy"></i> Copy</button>
+                                <button type="button" class="clear-button" data-track="errands.form.clear"><i class="fa-solid fa-trash"></i> Clear</button>
+                                <button type="button" class="archive-button" data-track="errands.form.archive"><i class="fa-solid fa-box-archive"></i> Archive</button>
+                            </div>
+                        </form>
+                        <form class="form-container" aria-labelledby="customer2-heading">
+                            <h2 id="customer2-heading" class="customer-heading">Customer 2</h2>
+                            <div class="form-area">
+                                <div class="input-pair">
+                                    <label for="input-edwin-id-2" class="input-label">Edwin Order #: </label>
+                                    <input type="text" name="input-edwin-id" id="input-edwin-id-2" placeholder="Edwin Order #" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-interaction-id-2" class="input-label">Interaction ID: </label>
+                                    <input type="text" name="input-interaction-id" id="input-interaction-id-2" placeholder="Interaction ID" class="input-field" aria-required="true">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-cxname-2" class="input-label">Customer Name: </label>
+                                    <input type="text" name="input-cxname" id="input-cxname-2" placeholder="Customer Name" class="input-field" aria-required="true">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-dpa-2" class="input-label">DPA: </label>
+                                    <input type="text" name="input-dpa" id="input-dpa-2" placeholder="DPA" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-relationship-2" class="input-label">Relationship: </label>
+                                    <input type="text" name="input-relationship" id="input-relationship-2" placeholder="Relationship" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-query-2" class="input-label">Query: </label>
+                                    <input type="text" name="input-query" id="input-query-2" placeholder="Query" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-resolution-2" class="input-label">Resolution: </label>
+                                    <input type="text" name="input-resolution" id="input-resolution-2" placeholder="Resolution" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-yyrl-2" class="input-label">YY RL/Ticket No. Provided: </label>
+                                    <input type="text" name="input-yyrl" id="input-yyrl-2" placeholder="YY RL/Ticket No. Provided" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-ghostline-2" class="input-label">Ghostline: </label>
+                                    <input type="text" name="input-ghostline" id="input-ghostline-2" placeholder="Ghostline" class="input-field">
+                                </div>
+                                <div class="input-pair">
+                                    <label for="input-validator-2" class="input-label">Validated by: </label>
+                                    <input type="text" name="input-validator" id="input-validator-2" placeholder="Validated by" class="input-field">
+                                </div>
+                            </div>
+                            <div class="notes-area">
+                                <textarea name="notes" id="notes-2" aria-label="Customer 2 notes" placeholder="Add your notes here..."></textarea>
+                            </div>
+                            <div class="form-action">
+                                <button type="button" class="copy-button" data-track="errands.form.copy"><i class="fa-solid fa-copy"></i> Copy</button>
+                                <button type="button" class="clear-button" data-track="errands.form.clear"><i class="fa-solid fa-trash"></i> Clear</button>
+                                <button type="button" class="archive-button" data-track="errands.form.archive"><i class="fa-solid fa-box-archive"></i> Archive</button>
+                            </div>
+                        </form>
+                    </div>
+                    
+                    <div class="archived-errands-section">
+                        <div class="archive-header">
+                            <h3>Archived Errands</h3>
+                            <p class="archive-note">Archived errands are deleted automatically after 24 hours.</p>
+                            <div class="archive-actions">
+                                <button id="copy-all-btn" data-track="errands.archive.copy_all" class="archive-action-btn">
+                                    <i class="fa-solid fa-copy"></i> Copy All
+                                </button>
+                                <button id="download-excel-btn" data-track="errands.archive.excel" class="archive-action-btn">
+                                    <i class="fa-solid fa-file-excel"></i> Download Excel
+                                </button>
+                                <button id="clear-archive-btn" data-track="errands.archive.clear" class="archive-action-btn">
+                                    <i class="fa-solid fa-trash-can"></i> Clear Archive
+                                </button>
+                            </div>
+                        </div>
+                        <div class="archived-table-container">
+                            <table id="archived-errands-table">
+                                <thead>
+                                    <tr>
+                                        <th>Edwin ID</th>
+                                        <th>Interaction ID</th>
+                                        <th>Customer Name</th>
+                                        <th>DPA</th>
+                                        <th>Relationship</th>
+                                        <th>Query</th>
+                                        <th>Resolution</th>
+                                        <th>YY RL/Ticket</th>
+                                        <th>Ghostline</th>
+                                        <th>Validated by</th>
+                                        <th>Notes</th>
+                                        <th>Archived Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="archived-errands-body">
+                                    <!-- Archived errands will be added here dynamically -->
+                                </tbody>
+                            </table>
+                            <div id="no-archives-message" class="no-archives-message">No archived errands</div>
+                        </div>
+                    </div>
+                </div>
+                <!--Errands Note End-->
+
+                <!--Script Page-->
+                <div class="sub-page active" id="script-page">
+                    <div class="script-nav-container">
+                        <div class="skeleton skeleton-tabs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                    </div>
+                    <p id="search-count" class="search-count" role="status"></p>
+                    <div class="script-canvas" aria-busy="true"><div class="skeleton" aria-hidden="true"><div class="sk-row"><div class="sk-title"></div><div class="sk-stack"><div class="sk-card"></div><div class="sk-card"></div></div></div><div class="sk-row"><div class="sk-title"></div><div class="sk-stack"><div class="sk-card"></div></div></div><div class="sk-row"><div class="sk-title"></div><div class="sk-stack"><div class="sk-card"></div><div class="sk-card"></div><div class="sk-card"></div></div></div></div>
+                        <p id="load-state" class="sr-only" role="status">Loading scripts…</p></div>
+                    <div class="no-search-results">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <p>No matching scripts found</p>
+                    </div>
+                </div>
+
+                <!--Checklist Page-->
+                <div class="sub-page" id="check-list-page">
+                    <div class="check-list-nav-container">
+                        <button id="Automated Void-nav" class="listnav-btn">Automated Void</button>
+                        <button id="Automated Exchange-nav" class="listnav-btn">Automated Exchange</button>
+                        <button id="Automated Cancel-nav" class="listnav-btn">Automated Cancel</button>
+                        <button id="Manual Void-nav" class="listnav-btn active">Manual Void</button>
+                        <button id="Manual Partial Exchange-nav" class="listnav-btn">Manual Partial Exchange</button>
+                        <button id="Manual Unused Exchange-nav" class="listnav-btn">Manual Unused Exchange</button>
+                        <button id="Manual Cancel-nav" class="listnav-btn">Manual Cancel</button>
+                    </div>
+                    <div class="checklist-canvas"></div>
+                </div>
+                
+                <div class="sub-page" id="links-page">
+                    <div class="links-header">
+                        Quick Links
+                    </div>
+                    <div class="links-container">
+                        <div class="links-btn-container">
+                            <div class="link-list"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=--z4I5BqwkaWyko2JyG4LK80vquCs1VLubaKa5VOj6lUME5JSjgzUlVOMTE2VTNBQzZRVU1MRjQ4MS4u" target="_blank" rel="noopener noreferrer" data-track="links.tile.click" data-track-label="Support Placement / Transfer Tracker">
+                                <i class="fa-solid fa-user-plus"></i>
+                                <h3>Support Placement / Transfer Tracker</h3>
+                            </a></div>
+                            <div class="link-list"><a href="https://wnsgs.sharepoint.com/:l:/s/EtraveliData/JADs7BttA97oR5hmOl2D4rKhAQpUqbEa3PdfDRorhKbkOWk?nav=MWViZDkyMTItNDU0Ny00ZmFlLWFhOWItMTY3ZDE5YWUxMGRi" target="_blank" rel="noopener noreferrer" data-track="links.tile.click" data-track-label="First Touch and Manual Transaction track">
+                                <i class="fa-solid fa-toolbox"></i>
+                                <h3>First Touch and Manual Transaction tracker</h3>
+                            </a></div>
+                            <div class="link-list"><a href="https://forms.office.com/Pages/ResponsePage.aspx?id=--z4I5BqwkaWyko2JyG4LK80vquCs1VLubaKa5VOj6lUMlNXMFM5VEIyWVIxVVdSNk1LRkZOR09RNi4u" target="_blank" rel="noopener noreferrer" data-track="links.tile.click" data-track-label="(Supervisor Only) 6th-7th Day OT per Wee">
+                                <i class="fa-solid fa-stopwatch"></i>
+                                <h3><strong>(Supervisor Only)</strong> 6th-7th Day OT per Week Tracker</h3>
+                            </a></div>
+                            <div class="link-list"><a href="https://forms.office.com/r/N71Lh4Ve3J" target="_blank" rel="noopener noreferrer" data-track="links.tile.click" data-track-label="Daily Void Tracker">
+                                <i class="fa-solid fa-eraser"></i>
+                                <h3>Daily Void Tracker</h3>
+                            </a></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Site Footer -->
+            </main>
+                <footer class="site-footer">
+                <div class="footer-bottom">
+                    <div class="copyright">&copy; <span id="year">2026</span> ACES - MIS Applications. <span id="footer-meta"></span></div>
+                    <div class="footer-actions">
+                        <a href="#main-content" class="to-top">Back to top</a>
+                        <button type="button" class="legal-toggle" aria-expanded="false" aria-controls="legal-links">Legal</button>
+                        <div class="legal-links" id="legal-links">
+                        <a href="privacy-policy.html" target="_blank" rel="noopener" data-track="footer.legal.click" data-track-label="privacy-policy.html">Privacy Policy</a>
+                        <a href="terms-conditions.html" target="_blank" rel="noopener" data-track="footer.legal.click" data-track-label="terms-conditions.html">Terms & Conditions</a>
+                        <a href="cookie-policy.html" target="_blank" rel="noopener" data-track="footer.legal.click" data-track-label="cookie-policy.html">Cookie Policy</a>
+                        <a href="adsense-disclaimer.html" target="_blank" rel="noopener" data-track="footer.legal.click" data-track-label="adsense-disclaimer.html">Disclaimer</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <div id="aces-live" class="sr-only" role="status" aria-live="polite"></div>
+
+    </div>
+
+
+    <script src="assets/js/config.js"></script>
+    <script src="assets/js/tracker.js"></script>
+    <script src="assets/js/data.js"></script>
+    <script src="assets/js/search.js"></script>
+    <script src="scripts-data.js" defer></script><!-- generated fallback for file:// use; see tools/build-data.mjs -->
+    <script src="checklist-data.js" defer></script>
+    <script src="script.js" defer></script>
+    <script src="copy-functions.js" defer></script>
+    <script src="sync-inputs.js" defer></script>
+    <script src="errands-page.js" defer></script>
+    <script src="links-page.js" defer></script>
+    <script src="checklistcontrol.js" defer></script>
+    <script src="assets/js/ads.js" defer></script>
+    <script src="assets/js/tabs.js" defer></script>
+    <script src="assets/js/app.js" defer></script>
+    <script src="assets/js/freeflow.js" defer></script>
+</body>
+
+</html>
+
