@@ -1,10 +1,10 @@
 (() => {
   'use strict';
   const cfg = (window.ACES_CONFIG || {}).ads || {}, S = cfg.slots || {};
-  const R = Object.assign({ enabled: true, firstDelaySec: 15, showSec: [30, 45], restMin: [5, 8], idleSec: 120, maxPerSession: 0, trigger: 'user' }, cfg.rotation);
+  const F = Object.assign({ enabled: true, every: [3, 2], max: 4, reuseSec: 60, maxPerMin: 8 }, cfg.feed);
   const track = (n, p) => window.acesTrack?.(n, p), page = () => document.body.dataset.page || 'scripts';
   const rnd = ([a, b]) => a + Math.random() * (b - a);
-  const unit = (id, fmt) => `<span class="ad-label">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-client="${cfg.client}" data-ad-slot="${id}" data-ad-format="${fmt}" data-full-width-responsive="true"></ins>`;
+  const unit = (id, fmt) => `<span class="ad-label">Advertisement</span><ins class="adsbygoogle" style="display:block" data-ad-client="${cfg.client}" data-ad-slot="${id}" data-ad-format="${fmt}" data-full-width-responsive="${fmt === 'vertical' ? 'false' : 'true'}"></ins>`;
   const make = (cls, key, id, fmt = 'auto') => { const a = document.createElement('aside'); a.className = `ad-slot ${cls}`; a.dataset.slot = key; a.setAttribute('aria-label', 'Advertisement'); a.innerHTML = unit(id, fmt); return a; };
   const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); fill(e.target); } }), { rootMargin: '400px 0px' });
 
@@ -28,53 +28,47 @@
     v.observe(slot);
   }
 
-  // ---- Links feed: requested only once the Links tab is first opened ----
-  let linksDone = false;
-  function linksFeed() {
-    if (linksDone || !S.links) return;
-    const grid = document.querySelector('#links-page .links-btn-container'); if (!grid) return;
-    linksDone = true;
-    const el = make('ad-links', 'links', S.links); grid.after(el);
-    requestAnimationFrame(() => fill(el));
+  // ---- Placement engine: every placement is created lazily, only for the page the agent is looking at ----
+  const $ = s => document.querySelector(s), id = (k, ...f) => [S[k], ...f.map(x => S[x])].find(Boolean);
+  const hits = [];                                       // global limiter: no request floods when tabs are switched rapidly
+  const allowed = () => { const t = Date.now(); while (hits.length && t - hits[0] > 60000) hits.shift(); if (hits.length >= F.maxPerMin) return false; hits.push(t); return true; };
+  const pg = {};                                         // one slot per page placement
+  function put(key, cls, slotId, fmt, place, reuseSec = F.reuseSec) {
+    if (!slotId) return;
+    const old = pg[key];
+    if (old?.isConnected && Date.now() - old._at < reuseSec * 1000) return;   // still fresh: keep it, no new request
+    if (!allowed()) return;
+    old?.remove();
+    const el = make(cls, key, slotId, fmt); el._at = Date.now(); pg[key] = el; place(el); io.observe(el);
   }
 
-  // ---- Rotating banner between scripts ----
-  const st = { el: null, timer: null, armed: false, count: 0, input: Date.now() };
-  ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach(ev => addEventListener(ev, () => { st.input = Date.now(); }, { passive: true, capture: true }));
-  const eligible = () => page() === 'scripts' && document.visibilityState === 'visible' && !document.body.classList.contains('search-active')
-    && Date.now() - st.input < R.idleSec * 1000 && !document.querySelector('.card-module .manual-edit.editing');
-  const later = sec => { clearTimeout(st.timer); st.timer = setTimeout(show, sec * 1000); };
-  function gap() {                         // a gap between two scripts, on screen but below the reading zone
-    const mod = document.querySelector('.script-module.active'), box = document.querySelector('.main-page').getBoundingClientRect();
-    if (!mod) return null;
-    const y = box.top + box.height * .7;
-    return [...mod.querySelectorAll(':scope > .script-card-sub')].slice(0, -1).find(s => { const r = s.getBoundingClientRect(); return r.height > 0 && r.bottom > y && r.bottom < box.bottom - 60; }) || null;
+  // ---- In-feed: re-built each time the agent switches script tab; one slot after every 3rd / 2nd script ----
+  function feed() {
+    const slotId = id('feed', 'banner'), mod = $('.script-module.active');
+    if (!F.enabled || !slotId || !mod || page() !== 'scripts') return;
+    const live = mod.querySelectorAll(':scope > .ad-feed');
+    if (live.length && Date.now() - (mod._adAt || 0) < F.reuseSec * 1000) return;   // returning soon: keep what is there
+    if (!allowed()) return;
+    live.forEach(x => x.remove());
+    const cards = [...mod.querySelectorAll(':scope > .script-card-sub.active')];
+    let n = 0, k = 0, i = F.every[0];
+    while (i < cards.length && n < F.max) {              // always leaves >= 1 script after the ad (the end slot covers the bottom)
+      const el = make('ad-feed', 'feed', slotId, 'horizontal'); cards[i - 1].after(el); io.observe(el);
+      n++; k++; i += F.every[k % F.every.length];
+    }
+    mod._adAt = Date.now();
   }
-  function show() {
-    clearTimeout(st.timer);
-    if (page() !== 'scripts' || st.el || !S.banner || (R.maxPerSession && st.count >= R.maxPerSession)) return;
-    if (!eligible() || !st.armed) return later(20);
-    const g = gap(); if (!g) return later(20);
-    st.armed = false; st.count++;
-    const el = make('ad-banner', 'banner', S.banner, 'horizontal'); g.after(el); st.el = el;
-    el.addEventListener('ad:status', e => e.detail === 'filled' ? (clearTimeout(st.timer), st.timer = setTimeout(drop, rnd(R.showSec) * 1000)) : drop(), { once: true });
-    st.timer = setTimeout(drop, 12000);    // never filled: clear it
-    fill(el);
-  }
-  function drop(instant) {
-    clearTimeout(st.timer);
-    const el = st.el; st.el = null;
-    if (el) { if (instant) el.remove(); else { el.classList.add('is-leaving'); setTimeout(() => el.remove(), 500); } }
-    st.timer = setTimeout(() => { st.armed = true; if (R.trigger === 'timer') show(); }, rnd(R.restMin) * 60000);
-  }
-  const onView = () => { if (st.armed && R.trigger === 'user') setTimeout(show, 600); };   // user-initiated view change
 
   function showFor() {
     const p = page();
     document.querySelectorAll('.ad-end').forEach(s => { s.hidden = !(cfg.endPages || []).includes(p); });
-    if (p === 'links') linksFeed();
-    if (p !== 'scripts' && st.el) drop(true);           // pause while another tab is open
-    if (p === 'scripts') onView();
+    if (p === 'scripts') {
+      put('tabbar', 'ad-tabbar', id('tabbar', 'banner'), 'horizontal', el => $('.script-nav-container').append(el), Infinity);
+      feed();
+    }
+    if (p === 'errands') put('errands', 'ad-wide', id('errands', 'banner'), 'horizontal', el => $('.archived-errands-section').before(el));
+    if (p === 'notes') put('notes', 'ad-rail', id('notes', 'end'), 'vertical', el => $('#notes-page').append(el));
+    if (p === 'links') put('links', 'ad-links', id('links'), 'horizontal', el => $('#links-page .links-btn-container').after(el), Infinity);
   }
 
   window.AcesAds = {
@@ -84,10 +78,8 @@
       document.querySelectorAll('.ad-end').forEach(x => io.observe(x));
       showFor();
       document.addEventListener('aces:page', showFor);
-      if (R.enabled && S.banner) {
-        document.querySelector('.script-nav-container').addEventListener('click', e => { if (e.target.closest('.nav-btn')) onView(); });
-        st.timer = setTimeout(() => { st.armed = true; show(); }, R.firstDelaySec * 1000);
-      }
+      // user-initiated switch between script tabs -> fresh in-feed slots for the tab that just opened
+      $('.script-nav-container').addEventListener('click', e => { if (e.target.closest('.nav-btn')) requestAnimationFrame(feed); });
     }
   };
 })();
