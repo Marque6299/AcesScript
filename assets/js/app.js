@@ -34,11 +34,7 @@
     const f = [...card.querySelectorAll('.manual-edit')];
     f.forEach(x => { const t = x.textContent.trim(); x.classList.toggle('filled', !!t && t !== x.dataset.defaultText); });
     const n = f.filter(x => x.classList.contains('filled')).length, ready = !f.length || n === f.length;
-    let b = card.querySelector('.card-copy');                       // real button: touch + keyboard friendly
-    if (!b) { b = document.createElement('button'); b.type = 'button'; b.className = 'card-copy'; card.appendChild(b); }
-    if (b.textContent !== 'Copy') b.textContent = 'Copy';
-    if (b.hidden === ready) b.hidden = !ready;                    // shown only when every field is filled
-    const prog = f.length ? (ready ? 'Ready · click to copy' : `${n} of ${f.length} fields filled`) : '';
+    const prog = f.length ? (ready ? 'Ready · tap or click to copy' : `${n} of ${f.length} fields filled`) : '';
     if (prog) { if (card.dataset.progress !== prog) card.dataset.progress = prog; } else delete card.dataset.progress;
     if (card.hasAttribute('data-ready') !== (ready && f.length > 0)) card.toggleAttribute('data-ready', ready && f.length > 0);
   };

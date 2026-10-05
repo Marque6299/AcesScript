@@ -10,7 +10,7 @@
   const queue = () => { if (!timer) timer = setTimeout(flush, 800); };
 
   function track(name, raw = {}) {
-    if (window.ACES_TRACK_OFF || navigator.doNotTrack === '1') return;
+    if (window.ACES_TRACK_OFF || window.ACES_RESTORING || navigator.doNotTrack === '1') return;   // ACES_RESTORING: session.js replaying clicks after an auto-update
     const props = {};
     for (const k in raw) if (OK.has(k) && raw[k] != null) props[k] = typeof raw[k] === 'string' ? raw[k].slice(0, 60) : raw[k];
     const day = new Date().toISOString().slice(0, 10), key = props.uid ? `${name}|${props.uid}` : name;
