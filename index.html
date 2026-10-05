@@ -93,9 +93,7 @@
             <main class="main-page" id="main-content" tabindex="-1">
                 <!--Freeflow Notes-->
                 <div class="sub-page" id="notes-page">
-                    <div class="freeflow-header">
-                        Freeflow Notes
-                    </div>
+                    <h2 class="sr-only">Freeflow Notes</h2>
                     <div class="freeflow-toolbar">
                         <button class="freeflow-tool-btn" id="ff-copy-btn" data-track="freeflow.copy" title="Copy to clipboard"><i class="fa-solid fa-copy"></i> Copy</button>
                         <button class="freeflow-tool-btn" id="ff-download-btn" data-track="freeflow.save" title="Download as text file"><i class="fa-solid fa-download"></i> Save</button>
@@ -103,8 +101,10 @@
                         <button class="freeflow-clear-btn" id="ff-clear-btn" data-track="freeflow.clear"><i class="fa-solid fa-trash"></i> Clear</button>
                         <span class="freeflow-char-count" id="ff-char-count">0 characters</span>
                     </div>
-                    <div class="freeflow-input">
-                        <textarea name="freeflow-textarea" id="ff-txt" aria-label="Freeflow notes" placeholder="Your notes here..."></textarea>
+                    <div class="freeflow-body">
+                        <div class="freeflow-input">
+                            <textarea name="freeflow-textarea" id="ff-txt" aria-label="Freeflow notes" placeholder="Your notes here..."></textarea>
+                        </div>
                     </div>
                 </div>
                 <!--Freeflow Notes End-->
@@ -271,7 +271,7 @@
                 <!--Script Page-->
                 <div class="sub-page active" id="script-page">
                     <div class="script-nav-container">
-                        <div class="skeleton skeleton-tabs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+                        <div class="skeleton skeleton-tabs" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
                     </div>
                     <p id="search-count" class="search-count" role="status"></p>
                     <div class="script-canvas" aria-busy="true"><div class="skeleton" aria-hidden="true"><div class="sk-row"><div class="sk-title"></div><div class="sk-stack"><div class="sk-card"></div><div class="sk-card"></div></div></div><div class="sk-row"><div class="sk-title"></div><div class="sk-stack"><div class="sk-card"></div></div></div><div class="sk-row"><div class="sk-title"></div><div class="sk-stack"><div class="sk-card"></div><div class="sk-card"></div><div class="sk-card"></div></div></div></div>
@@ -362,6 +362,7 @@
     <script src="assets/js/tabs.js" defer></script>
     <script src="assets/js/app.js" defer></script>
     <script src="assets/js/freeflow.js" defer></script>
+    <script src="assets/js/session.js" defer></script><!-- version check every 10 min + input snapshot/restore -->
 </body>
 
 </html>
