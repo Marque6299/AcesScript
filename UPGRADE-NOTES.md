@@ -90,3 +90,8 @@ Written without a browser. Do a live pass: tab through header -> tabs -> card ->
 - Legal pages: GA4 + local/session storage disclosed, claims about accounts/marketing/transactions removed, dates and contact emails fixed.
 - Account side (code cannot fix): the limit is a traffic assessment, so it lifts on Google's schedule. Check AdSense > Sites that the host is eligible (`*.netlify.app` is often rejected; a custom domain is safer), and confirm you may host the client's scripts.
 - Not render-tested.
+
+## Round 9 (V8): Freeflow banner, Links multiplex decision
+- **Freeflow**: one fixed-size banner (468x60, or 320x50 on narrow) between the tools and the text area, with 32px clear space on both sides. It is requested once, the first time the page is opened, and never refreshed. Not placed when the pane is under 400px tall. Side column stays off. Uses the `banner` unit unless `slots.notesBar` is set.
+- **Links multiplex NOT added** (slot 4412710615 parked in `config.js`): the page is a navigation screen with four links, so a multiplex grid would outweigh the content and look like more link tiles. Add original content to the page first, then ask for it to be wired in.
+- Not render-tested.

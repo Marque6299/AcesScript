@@ -24,8 +24,9 @@ window.ACES_CONFIG = {
     //   notesSide            : the 20% column beside the Freeflow text area. Pre-filled with your retired rail unit (6965605774); create a fresh display unit
     //                          for it in AdSense if that one was a fixed size, because the column serves 300x600 / 160x600 / 300x250 / smaller. Empty = column off.
     slots: { end: '7813895425', banner: '5267623137', links: '', feed: '', notesBar: '', notesSide: '' },
-    // V7: Links and Freeflow have little publisher content (policy: no ads on low-value / navigation screens), so those placements are OFF.
-    // Old IDs if ever restored: links 6500813756, notesSide 6965605774.
+    // V8: the Links ad is OFF (navigation screen with little publisher content). Freeflow keeps ONE slim banner (side column OFF), requested once,
+    // the first time that page is opened. Parked IDs: links 6500813756, notesSide 6965605774, Links multiplex (autorelaxed) 4412710615 - do not
+    // enable the multiplex until the Links page has real publisher content.
     endPages: ['scripts', 'checklist'],
 
     // In-feed ads between script cards. Every click on a DIFFERENT category starts a fresh view: the old units are removed and
@@ -43,7 +44,7 @@ window.ACES_CONFIG = {
     // Freeflow notes: a thin strip between the tools and the text area, plus a column at 20% of the width on its right.
     // Both are fixed standard sizes chosen to FIT (never clipped) and stay at zero size until AdSense fills them.
     notes: {
-      bar: false, barSizes: [[468, 60], [320, 50]],                                           // smallest height first
+      bar: true,  barSizes: [[468, 60], [320, 50]],                                           // smallest height first
       side: false, sidePct: 20, sideMinPageWidth: 720,                                        // phones: no side column
       sideSizes: [[300, 600], [160, 600], [300, 250], [250, 250], [200, 200], [180, 150]]    // largest that fits wins
     },

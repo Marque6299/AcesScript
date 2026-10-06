@@ -123,7 +123,7 @@
     let barH = 0;
     if (N.bar && barId) {
       const sz = (N.barSizes || []).find(s => s[0] + 24 <= box.width);
-      if (sz) { const el = make('ad-ff-bar', 'notes-bar', barId, null, sz); body.before(el); barH = sz[1] + 14; requestAnimationFrame(() => fill(el)); }
+      if (sz && box.height >= 400) { const el = make('ad-ff-bar', 'notes-bar', barId, null, sz); body.before(el); barH = sz[1] + 14; requestAnimationFrame(() => fill(el)); }
     }
     if (N.side && sideId && box.width >= N.sideMinPageWidth) {
       const colW = (box.width - 32) * N.sidePct / 100 - 12 - 14;     // 20% of the content box, minus the gap to the text area, slot padding and border

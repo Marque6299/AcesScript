@@ -361,3 +361,6 @@ body[data-page="notes"] .main-page { overflow-y:hidden !important; scrollbar-gut
 .ad-feed, .ad-feed.is-filled { margin:44px 0; }
 .ad-slot.is-empty, .ad-slot[hidden] { display:none; }
 @media (max-width:768px) { .ad-feed, .ad-feed.is-filled { margin:52px 0; } }
+
+/* ---- V8: Freeflow banner sits between the tools and the text area; generous clear space on both sides (accidental-click safety), fixed 468x60 / 320x50 ---- */
+.ad-ff-bar, .ad-ff-bar.is-filled, .ad-ff-bar.is-leaving { min-height:0; margin:32px 12px; padding:6px 12px; border-width:1px; border-radius:8px; max-height:none; }
