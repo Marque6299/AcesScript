@@ -352,3 +352,12 @@ body[data-page="notes"] .main-page { overflow-y:hidden !important; scrollbar-gut
 .aces-toast.show { opacity:1; transform:none; pointer-events:auto; }
 .aces-toast button { margin-left:12px; min-height:32px; padding:0 14px; border:0; border-radius:8px; background:#fff; color:#1c2630; font-weight:600; cursor:pointer; }
 @media (max-width:768px) { .aces-toast { left:12px; right:12px; bottom:calc(var(--foot-h, 40px) + var(--bar-h, 60px) + env(safe-area-inset-bottom) + 12px); max-width:none; } }
+
+/* ---- V7 AdSense compliance: slots are visible, labelled and sized BEFORE the request (no 0-height / opacity:0 boxes, no clipping).
+   Only a confirmed-unfilled slot collapses. Wider gaps keep ads away from the click-to-copy cards. ---- */
+.ad-slot, .ad-slot.is-filled, .ad-slot.is-leaving { max-height:none; overflow:visible; opacity:1; transition:none; min-height:150px;
+  margin:40px 12px; padding:8px; border:1px solid rgba(255,255,255,.22); border-radius:8px; }
+.ad-end, .ad-end.is-filled { min-height:290px; margin:48px 12px 24px; }
+.ad-feed, .ad-feed.is-filled { margin:44px 0; }
+.ad-slot.is-empty, .ad-slot[hidden] { display:none; }
+@media (max-width:768px) { .ad-feed, .ad-feed.is-filled { margin:52px 0; } }

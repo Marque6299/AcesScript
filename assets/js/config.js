@@ -23,26 +23,28 @@ window.ACES_CONFIG = {
     //   notesBar             : strip above the Freeflow text area (falls back to `banner`).
     //   notesSide            : the 20% column beside the Freeflow text area. Pre-filled with your retired rail unit (6965605774); create a fresh display unit
     //                          for it in AdSense if that one was a fixed size, because the column serves 300x600 / 160x600 / 300x250 / smaller. Empty = column off.
-    slots: { end: '7813895425', banner: '5267623137', links: '6500813756', feed: '', notesBar: '', notesSide: '6965605774' },
+    slots: { end: '7813895425', banner: '5267623137', links: '', feed: '', notesBar: '', notesSide: '' },
+    // V7: Links and Freeflow have little publisher content (policy: no ads on low-value / navigation screens), so those placements are OFF.
+    // Old IDs if ever restored: links 6500813756, notesSide 6965605774.
     endPages: ['scripts', 'checklist'],
 
     // In-feed ads between script cards. Every click on a DIFFERENT category starts a fresh view: the old units are removed and
     // new ones are planned (one after every 2-3 cards). Requests stay lazy and rate-limited so rapid tab flipping cannot spam AdSense.
     feed: {
       enabled: true,
-      everyCards: [2, 3],        // one ad after every 2 or 3 cards (re-rolled after each ad)
-      minContentPx: 240,         // an ad waits until at least this much script content sits above it, so very short cards stretch the gap a little (0 = strict 2-3 cards)
-      maxPerView: 12,            // hard cap per category view (0 = no cap). Long categories such as ETG Chat Scripts have 100+ cards
-      dwellMs: 1200,             // request only after the agent stayed on the category this long
-      maxRequestsPerMin: 10,     // sliding-window guard on ALL ad requests from this tab
+      everyCards: [3, 4],        // one ad after every 2 or 3 cards (re-rolled after each ad)
+      minContentPx: 600,         // an ad waits until at least this much script content sits above it, so very short cards stretch the gap a little (0 = strict 2-3 cards)
+      maxPerView: 6,            // hard cap per category view (0 = no cap). Long categories such as ETG Chat Scripts have 100+ cards
+      dwellMs: 2500,             // request only after the agent stayed on the category this long
+      maxRequestsPerMin: 6,     // sliding-window guard on ALL ad requests from this tab
       initialView: true          // also fill the first category shown on page load
     },
 
     // Freeflow notes: a thin strip between the tools and the text area, plus a column at 20% of the width on its right.
     // Both are fixed standard sizes chosen to FIT (never clipped) and stay at zero size until AdSense fills them.
     notes: {
-      bar: true,  barSizes: [[468, 60], [320, 50]],                                           // smallest height first
-      side: true, sidePct: 20, sideMinPageWidth: 720,                                        // phones: no side column
+      bar: false, barSizes: [[468, 60], [320, 50]],                                           // smallest height first
+      side: false, sidePct: 20, sideMinPageWidth: 720,                                        // phones: no side column
       sideSizes: [[300, 600], [160, 600], [300, 250], [250, 250], [200, 200], [180, 150]]    // largest that fits wins
     },
 

@@ -189,6 +189,12 @@
       document.querySelectorAll('.ad-end').forEach(x => io.observe(x));
       showFor();
       document.addEventListener('aces:page', showFor);
+      let wasSearching = false;      // V7: ads are removed (never display:none'd) while searching, planned again afterwards
+      new MutationObserver(() => {
+        const s = document.body.classList.contains('search-active');
+        if (s === wasSearching) return; wasSearching = s;
+        if (s) { clearFeed(); if (st.el) drop(true); } else requestAnimationFrame(planFeed);
+      }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
       const bar = $('.script-nav-container');
       bar.addEventListener('click', e => {                 // runs after the tab's own handlers, so the new category is already active
         if (!e.target.closest('.nav-btn')) return;

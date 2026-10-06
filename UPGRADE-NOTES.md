@@ -81,3 +81,12 @@ Written without a browser. Do a live pass: tab through header -> tabs -> card ->
 - **Accessibility**: clipped chips are `inert` (not focusable or read out) until the rail opens; Left/Right/Home/End move between chips and Up/Down jump to the row above/below; the toggle has `aria-expanded`/`aria-controls` and an updating label ("Show 5 more script categories"). On touch screens each chip gets an invisible hit area of about 32-34px; the visible chip stays at half size. Reduced-motion users get no animation. Contrast of white 12px text on the group colours: 5.0:1 to 7.1:1.
 - **Other changes**: skeleton loader now shows two rows of small chips; ad requests that hit the per-minute cap for the one-per-page units (Links, Free-flow strip and column) now wait for the window to clear instead of being dropped, only in-feed units are dropped.
 - Tested in headless Chromium at 1920, 1366, 1024 and 390px wide (stub ad script): 2 rows with no toggle at 1920, 3 rows (+5) at 1366, 4 rows (+11) at 1024, 12 rows on a phone; no layout shift when opening; colour of every chip checked against its group; keyboard, hover, tab pick from a hidden row, update-and-restore, and in-feed ads all re-checked. Not tested on a real device or live Netlify deploy.
+
+## Round 8 (V7): AdSense policy pass (after "ad serving limited - account being assessed", Oct 6 2026)
+- Slots are visible, labelled and sized before the request (no `max-height:0` / `opacity:0`, no `overflow:hidden` clipping); only a confirmed-unfilled slot collapses. Ads are removed, not hidden, while searching.
+- Feed gaps 44px (52px phones), end unit 48px; one ad per 3-4 cards, >=600px of content between ads, max 6 per view, 6 requests/min, 2.5 s dwell.
+- Links and Freeflow ads are OFF (low publisher content; Freeflow holds customer details). Old IDs are noted in `config.js`.
+- Funding Choices tag added to `<head>`; publish a GDPR message in AdSense > Privacy & messaging for it to show. GA4 (injected by Netlify) should use Consent Mode.
+- Legal pages: GA4 + local/session storage disclosed, claims about accounts/marketing/transactions removed, dates and contact emails fixed.
+- Account side (code cannot fix): the limit is a traffic assessment, so it lifts on Google's schedule. Check AdSense > Sites that the host is eligible (`*.netlify.app` is often rejected; a custom domain is safer), and confirm you may host the client's scripts.
+- Not render-tested.
