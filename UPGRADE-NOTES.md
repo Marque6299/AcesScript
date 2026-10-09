@@ -82,16 +82,29 @@ Written without a browser. Do a live pass: tab through header -> tabs -> card ->
 - **Other changes**: skeleton loader now shows two rows of small chips; ad requests that hit the per-minute cap for the one-per-page units (Links, Free-flow strip and column) now wait for the window to clear instead of being dropped, only in-feed units are dropped.
 - Tested in headless Chromium at 1920, 1366, 1024 and 390px wide (stub ad script): 2 rows with no toggle at 1920, 3 rows (+5) at 1366, 4 rows (+11) at 1024, 12 rows on a phone; no layout shift when opening; colour of every chip checked against its group; keyboard, hover, tab pick from a hidden row, update-and-restore, and in-feed ads all re-checked. Not tested on a real device or live Netlify deploy.
 
-## Round 8 (V7): AdSense policy pass (after "ad serving limited - account being assessed", Oct 6 2026)
-- Slots are visible, labelled and sized before the request (no `max-height:0` / `opacity:0`, no `overflow:hidden` clipping); only a confirmed-unfilled slot collapses. Ads are removed, not hidden, while searching.
-- Feed gaps 44px (52px phones), end unit 48px; one ad per 3-4 cards, >=600px of content between ads, max 6 per view, 6 requests/min, 2.5 s dwell.
-- Links and Freeflow ads are OFF (low publisher content; Freeflow holds customer details). Old IDs are noted in `config.js`.
-- Funding Choices tag added to `<head>`; publish a GDPR message in AdSense > Privacy & messaging for it to show. GA4 (injected by Netlify) should use Consent Mode.
-- Legal pages: GA4 + local/session storage disclosed, claims about accounts/marketing/transactions removed, dates and contact emails fixed.
-- Account side (code cannot fix): the limit is a traffic assessment, so it lifts on Google's schedule. Check AdSense > Sites that the host is eligible (`*.netlify.app` is often rejected; a custom domain is safer), and confirm you may host the client's scripts.
-- Not render-tested.
+## Round 8: RPM leak fix (ads)
+**What the AdSense table (Oct 3-9) showed.** Revenue tracks *viewable* impressions, not total impressions: multiplying impressions by Active View viewable gives about 15,250 viewable impressions for $17.09, i.e. about $1.05 per 1,000 viewable on every full day (Oct 3 $1.03, Oct 5 $1.04, Oct 7 $1.08, Oct 8 $1.05). The other ~19,600 impressions (56%) were rendered but not seen and earned almost nothing. Viewable fell from 98.9% (Oct 3) to 33.5% (Oct 8) as impressions per page view rose from 0.65 to 1.8-5.1, and impression RPM fell from $0.99 to $0.35 with it. Page RPM spikes on Oct 5-6 are click-driven (17 and 7 clicks).
 
-## Round 9 (V8): Freeflow banner, Links multiplex decision
-- **Freeflow**: one fixed-size banner (468x60, or 320x50 on narrow) between the tools and the text area, with 32px clear space on both sides. It is requested once, the first time the page is opened, and never refreshed. Not placed when the pane is under 400px tall. Side column stays off. Uses the `banner` unit unless `slots.notesBar` is set.
-- **Links multiplex NOT added** (slot 4412710615 parked in `config.js`): the page is a navigation screen with four links, so a multiplex grid would outweigh the content and look like more link tiles. Add original content to the page first, then ask for it to be wired in.
-- Not render-tested.
+**Where V6 leaked.** Units were requested 400px *before* they scrolled in (half of V6's requests in the test were fully off-screen); the in-feed format was `horizontal` full-width (leaderboard-shaped, low demand); one ad per 2-3 cards put ads at about 1:1 with scripts; Freeflow used 468x60 / 320x50 / 200x200 / 180x150 (lowest-demand sizes); nothing stopped requests into a window that was not focused or an idle tab (agents work split-screen); ads grew from zero height when they filled, moving cards under the pointer.
+
+**What V7 does** (`assets/js/ads.js`, `ads` in `config.js`, "Round 8" block in `aces-upgrade.css`):
+- **Request only what will be seen.** A box is set aside (blank, labelled "Advertisement") up to 300px before it scrolls in, but AdSense is asked only while at least 50% of the box is on screen for 1 s, the window has focus and the agent was active in the last 90 s. In the same agent workflow, the share of requests made while the ad was on screen went from 50% (V6) to 100% (V7).
+- **Nothing moves.** The reserved box keeps its height when the creative arrives (0px motion in the test), 24px clear of the click-to-copy cards, so a tap meant for a script cannot land on an ad. Links and Freeflow reserve their boxes the moment the page opens. A blocked or unanswered request removes the blank box after 8 s.
+- **Higher-demand sizes.** In-feed, end and Links units are `rectangle` (300x250 / 336x280) in a box capped at 336px; Freeflow uses 728x90 (320x100 on narrow screens) for the strip and 300x600 / 160x600 / 300x250 / 250x250 for the column. 468x60, 320x50, 200x200 and 180x150 are gone, so the column now opens on large screens only (it did not fit a proper size on 1366x768 laptops).
+- **Density by content, not by count.** The first unit of a category view lands inside the opening screen (after 2-3 cards, or 1-2 on phones); later units are about one screen of scripts apart (3-4 cards, at least 520px desktop / 640px phone), at most 6 per view. In the test the first unit was inside the opening screen in 8 of 8 views that have one on 1366x768 and 1920x1080; on phones it depends on scrolling because one script card can fill the screen.
+- **Fewer, steadier requests.** At least 5 s between in-feed requests, at most 6 requests per minute per tab, one request per tick.
+- **Removed:** the timed rotating banner (`rotation`) and its code. A timer that requests new ads is exactly what AdSense's no-refresh rule forbids. New ads are requested only after a user action (opening a category, scrolling, opening a tab).
+
+**Policy checklist (all kept):** no refresh, no overlays or sticky custom ads, every unit labelled, units never inside cards or beside controls, ads hidden while searching, nothing requested on skeleton / error states, requests only from a visible, focused, active window.
+
+**Measure it (3-7 days, AdSense > Reports):** Active View viewable (target well above the 43.76% average; it was 77-99% when each page had one unit), impressions per page view (expect it to settle around 1-2.5; fewer is fine), impression RPM, page RPM. Use *By ad unit* and *By ad size* to see which sizes pay. Note impressions will drop: that is intended, because the dropped ones were not viewable.
+
+**Account-side items (cannot be fixed in code):**
+1. AdSense > Sites > ads.txt must read "Authorized"; fix it first, a missing/unauthorized ads.txt lowers bids.
+2. Create dedicated display ad units (responsive) for `feed`, `links`, `notesBar` and `notesSide`, paste the IDs into `slots`, and stop sharing `banner` / the retired rail unit. Per-placement reporting needs this.
+3. Auto ads: leave Anchor / Vignette off here, the page has a fixed footer and its own placements. Test Auto ads on a separate copy before turning anything on.
+4. Check Ads > Ad review center and Blocking controls: block categories that pay under the floor and watch for large drops in CPM.
+5. Early clicks look unusual: Oct 3 5 clicks on 88 impressions (5.7%), Oct 4 9 on 429 (2.1%), Oct 5 17 on 2,099 (0.8%), against 0.03-0.06% on Oct 6-8. If any came from testing, do not click your own ads (invalid activity can be discounted or reviewed). Ads that load and push content under the pointer cause accidental clicks; V7 removes that cause.
+6. Traffic location sets a ceiling on CPM (see Reports > Countries). Code cannot change it.
+
+Tested in headless Chromium (1366x768, 1920x1080, 390x800 and other phone sizes) with a stubbed ad script; not tested against live AdSense. Tab rail, update-and-restore, Freeflow scroll lock and Links layout were re-checked.

@@ -353,14 +353,15 @@ body[data-page="notes"] .main-page { overflow-y:hidden !important; scrollbar-gut
 .aces-toast button { margin-left:12px; min-height:32px; padding:0 14px; border:0; border-radius:8px; background:#fff; color:#1c2630; font-weight:600; cursor:pointer; }
 @media (max-width:768px) { .aces-toast { left:12px; right:12px; bottom:calc(var(--foot-h, 40px) + var(--bar-h, 60px) + env(safe-area-inset-bottom) + 12px); max-width:none; } }
 
-/* ---- V7 AdSense compliance: slots are visible, labelled and sized BEFORE the request (no 0-height / opacity:0 boxes, no clipping).
-   Only a confirmed-unfilled slot collapses. Wider gaps keep ads away from the click-to-copy cards. ---- */
-.ad-slot, .ad-slot.is-filled, .ad-slot.is-leaving { max-height:none; overflow:visible; opacity:1; transition:none; min-height:150px;
-  margin:40px 12px; padding:8px; border:1px solid rgba(255,255,255,.22); border-radius:8px; }
-.ad-end, .ad-end.is-filled { min-height:290px; margin:48px 12px 24px; }
-.ad-feed, .ad-feed.is-filled { margin:44px 0; }
-.ad-slot.is-empty, .ad-slot[hidden] { display:none; }
-@media (max-width:768px) { .ad-feed, .ad-feed.is-filled { margin:52px 0; } }
-
-/* ---- V8: Freeflow banner sits between the tools and the text area; generous clear space on both sides (accidental-click safety), fixed 468x60 / 320x50 ---- */
-.ad-ff-bar, .ad-ff-bar.is-filled, .ad-ff-bar.is-leaving { min-height:0; margin:32px 12px; padding:6px 12px; border-width:1px; border-radius:8px; max-height:none; }
+/* ===== Round 8: reserved ad boxes (nothing moves when an ad arrives), rectangle width cap, bigger Freeflow strip ===== */
+.ad-slot.is-reserved { max-height:none; opacity:1; min-height:calc(var(--ad-reserve, 0px) + var(--ad-chrome, 44px)); margin:24px 12px; padding:8px;
+  border:1px dashed rgba(255,255,255,.28); border-radius:8px; }                      /* blank + labelled "Advertisement" until the unit is requested */
+.ad-slot.is-reserved.is-filled { border-style:solid; border-color:rgba(255,255,255,.22); }
+.ad-slot .ad-box { max-width:var(--ad-box-max, none); min-height:var(--ad-reserve, 0px); margin:0 auto; display:flex; align-items:center; justify-content:center; }
+.ad-slot .ad-box ins.adsbygoogle { width:100%; }
+.ad-feed.is-reserved { margin:24px 0; }                                              /* 24px clear of the click-to-copy cards: a tap meant for a script never lands on an ad */
+.ad-links.is-reserved { margin:8px 16px 16px; }
+.ad-ff-bar.is-reserved { --ad-chrome:10px; display:flex; margin:0; padding:3px 16px; border-width:1px 0; border-radius:0; max-height:none; }
+.ad-ff-side.is-reserved { --ad-chrome:44px; margin:0; padding:6px; border-radius:8px; }
+.ad-slot.is-empty { display:none !important; }
+.search-active .ad-feed, .search-active .ad-end { display:none; }

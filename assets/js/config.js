@@ -22,42 +22,51 @@ window.ACES_CONFIG = {
     //   end / links / banner : as before.      feed      : in-feed units between script cards (falls back to `banner`).
     //   notesBar             : strip above the Freeflow text area (falls back to `banner`).
     //   notesSide            : the 20% column beside the Freeflow text area. Pre-filled with your retired rail unit (6965605774); create a fresh display unit
-    //                          for it in AdSense if that one was a fixed size, because the column serves 300x600 / 160x600 / 300x250 / smaller. Empty = column off.
-    slots: { end: '7813895425', banner: '5267623137', links: '', feed: '', notesBar: '', notesSide: '' },
-    // V8: the Links ad is OFF (navigation screen with little publisher content). Freeflow keeps ONE slim banner (side column OFF), requested once,
-    // the first time that page is opened. Parked IDs: links 6500813756, notesSide 6965605774, Links multiplex (autorelaxed) 4412710615 - do not
-    // enable the multiplex until the Links page has real publisher content.
+    //                          for it in AdSense if that one was a fixed size, because the column serves 300x600 / 160x600 / 300x250 / 250x250. Empty = column off.
+    slots: { end: '7813895425', banner: '5267623137', links: '6500813756', feed: '', notesBar: '', notesSide: '6965605774' },
     endPages: ['scripts', 'checklist'],
 
-    // In-feed ads between script cards. Every click on a DIFFERENT category starts a fresh view: the old units are removed and
-    // new ones are planned (one after every 2-3 cards). Requests stay lazy and rate-limited so rapid tab flipping cannot spam AdSense.
+    // WHEN a unit may load (the RPM part). A box is set aside while it is still off screen, so nothing moves under the agent's pointer, and
+    // is requested only while it is really on screen: that is what raises Active View viewability and with it the price advertisers pay.
+    gate: {
+      viewRatio: 0.5,            // request only while at least this share of the box is on screen...
+      dwellMs: 1000,             // ...for this long
+      lookaheadPx: 300,          // reserve (blank, labelled "Advertisement") the box this far before it scrolls in. It is NOT requested yet
+      requireFocus: true,        // never load into a window that is not focused (agents work split-screen: an unfocused tool is not being looked at)
+      idleSec: 90,               // ...or after this long without mouse / keys / scroll / touch
+      minGapMs: 5000,            // minimum time between two in-feed requests
+      maxRequestsPerMin: 6,      // sliding-window guard on ALL ad requests from this tab
+      giveUpMs: 8000             // blocked or unanswered: remove the blank box
+    },
+
+    // In-feed ads between script cards. Every click on a DIFFERENT category starts a fresh view: the old units are removed and new ones are planned.
+    // Rectangles (300x250 / 336x280) are the highest-demand display sizes; the box is capped at boxMaxPx wide so AdSense answers with a rectangle
+    // instead of a low-value leaderboard. Spacing follows content height so ads never outweigh the scripts around them.
     feed: {
       enabled: true,
-      everyCards: [3, 4],        // one ad after every 2 or 3 cards (re-rolled after each ad)
-      minContentPx: 600,         // an ad waits until at least this much script content sits above it, so very short cards stretch the gap a little (0 = strict 2-3 cards)
-      maxPerView: 6,            // hard cap per category view (0 = no cap). Long categories such as ETG Chat Scripts have 100+ cards
-      dwellMs: 2500,             // request only after the agent stayed on the category this long
-      maxRequestsPerMin: 6,     // sliding-window guard on ALL ad requests from this tab
+      format: 'rectangle',
+      boxMaxPx: 336,
+      reservePx: 280,            // height set aside for the creative
+      firstCards: [2, 3],        // FIRST unit of a category view: after 2-3 cards...
+      firstCardsMobile: [1, 2],  // ...on phones, whose cards are tall: after the first 1-2
+      firstAfterPx: 280,         // ...but not before this much script content (it must land inside the opening screen: unseen units earn nothing)
+      firstAfterPxMobile: 200,
+      everyCards: [3, 4],        // later units: after every 3 or 4 cards...
+      minContentPx: 520,         // ...and never before this much script content sits above them (about one screen of scripts per ad)
+      minContentPxMobile: 640,   // same rule on screens up to 768px wide
+      maxPerView: 6,             // hard cap per category view (0 = no cap)
       initialView: true          // also fill the first category shown on page load
     },
+    end: { format: 'rectangle', reservePx: 280 },                    // one unit after the last card
+    links: { format: 'rectangle', reservePx: 280 },                  // bottom strip of the Links tab
 
-    // Freeflow notes: a thin strip between the tools and the text area, plus a column at 20% of the width on its right.
-    // Both are fixed standard sizes chosen to FIT (never clipped) and stay at zero size until AdSense fills them.
+    // Freeflow notes: a strip between the tools and the text area, plus a column at 20% of the width on its right.
+    // Only high-demand standard sizes are used, chosen to FIT (never clipped). 200x200 / 180x150 / 468x60 / 320x50 earn very little, so the column
+    // simply stays closed on screens too small for a proper size (it opens on full-HD desktops).
     notes: {
-      bar: true,  barSizes: [[468, 60], [320, 50]],                                           // smallest height first
-      side: false, sidePct: 20, sideMinPageWidth: 720,                                        // phones: no side column
-      sideSizes: [[300, 600], [160, 600], [300, 250], [250, 250], [200, 200], [180, 150]]    // largest that fits wins
-    },
-
-    // The old timed rotating banner is OFF: the in-feed units above replace it (running both would stack too many ads on one view).
-    rotation: {
-      enabled: false,
-      firstDelaySec: 15,
-      showSec: [30, 45],
-      restMin: [5, 8],
-      idleSec: 120,
-      maxPerSession: 0,
-      trigger: 'user'            // 'user' = waits for the agent's next tab/page switch (AdSense-compliant)
+      bar: true,  barSizes: [[728, 90], [320, 100]],                                          // first one that fits the width wins
+      side: true, sidePct: 20, sideMinPageWidth: 720,                                        // phones: no side column
+      sideSizes: [[300, 600], [160, 600], [300, 250], [250, 250]]                            // largest that fits wins
     }
   },
 
